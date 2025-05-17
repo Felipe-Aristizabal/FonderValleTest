@@ -1,24 +1,23 @@
-import { useState, useEffect } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { FormProvider, useForm } from "react-hook-form"
-import type { FormValues } from "@/lib/form-schema"
-import { formSchema } from "@/lib/form-schema"
-import type { VisitValues } from "@/lib/form-schema"
-import { visitSchema } from "@/lib/form-schema"
-import { v4 as uuidv4 } from "uuid"
+import { useState, useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FormProvider, useForm } from "react-hook-form";
+import type { FormValues } from "@/lib/form-schema";
+import { formSchema } from "@/lib/form-schema";
+import type { VisitValues } from "@/lib/form-schema";
+import { visitSchema } from "@/lib/form-schema";
+import { v4 as uuidv4 } from "uuid";
 
-import { Button } from "@/components/ui/button"
-import PersonalInformation from "@/containers/personal-information"
-import CompanyInformation from "@/containers/company-information"
-import CreditInformation from "@/containers/credit-information"
-import EvaluatorObservations from "@/containers/evaluator-observations"
-import CreditEvaluation from "@/containers/credit-evaluation"
-import FinancialDiagnosis from "@/containers/financial-diagnosis"
-import CommercialDiagnosis from "@/containers/commercial-diagnosis"
-import VisitEvidence from "@/containers/visit-evidence"
+import { Button } from "@/components/ui/button";
+import PersonalInformation from "@/containers/personal-information";
+import CompanyInformation from "@/containers/company-information";
+import CreditInformation from "@/containers/credit-information";
+import EvaluatorObservations from "@/containers/evaluator-observations";
+import CreditEvaluation from "@/containers/credit-evaluation";
+import FinancialDiagnosis from "@/containers/financial-diagnosis";
+import CommercialDiagnosis from "@/containers/commercial-diagnosis";
+import VisitEvidence from "@/containers/visit-evidence";
 
-
-const STORAGE_KEY = import.meta.env.VITE_STORAGE_KEY ?? "fallbackKey"
+const STORAGE_KEY = import.meta.env.VITE_STORAGE_KEY ?? "fallbackKey";
 
 export default function EvaluationForm() {
   const [expandedSections, setExpandedSections] = useState({
@@ -30,91 +29,103 @@ export default function EvaluationForm() {
     financial: false,
     commercial: false,
     evidenceVisit: false,
-  })
-
+  });
 
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema), defaultValues: {
-      creditDestination: [],            
-      otherCreditDestination: "", 
-      visits: [{
-        date: new Date(),
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      creditDestination: [],
+      otherCreditDestination: "",
+      visits: [
+        {
+          date: new Date(),
 
-        creditUsedAsApproved: "",
-        creditUsageDescription: "",
-        improvements: [],
-        otherImprovement: "",
-        timeToResults: "",
-        resultsAsExpected: "",
-        resultsExplanation: "",
-        evidenceFile: [],
-        financialRecords: "",
-        resourceManager: "",
-        otherResourceManager: "",
-        paymentsOnSchedule: "",
-        paymentExplanation: "",
-        satisfaction: "",
-        needAnotherCredit: "",
-        creditIntendedUse: "",
+          creditUsedAsApproved: "",
+          creditUsageDescription: "",
+          improvements: [],
+          otherImprovement: "",
+          timeToResults: "",
+          resultsAsExpected: "",
+          resultsExplanation: "",
+          evidenceFile: [],
+          financialRecords: "",
+          resourceManager: "",
+          otherResourceManager: "",
+          paymentsOnSchedule: "",
+          paymentExplanation: "",
+          satisfaction: "",
+          needAnotherCredit: "",
+          creditIntendedUse: "",
 
-        monthlyIncome: "",
-        fixedCosts: "",
-        variableCosts: "",
-        debtLevel: "",
-        creditUsedPercentage: "",
-        monthlyPayment: "",
-        emergencyReserve: "",
+          monthlyIncome: "",
+          fixedCosts: "",
+          variableCosts: "",
+          debtLevel: "",
+          creditUsedPercentage: "",
+          monthlyPayment: "",
+          emergencyReserve: "",
 
-        monthlyClients: "",
-        monthlySales: "",
-        totalSalesValue: "",
-        currentEmployees: "",
-        salesChannels: [],
-        otherSalesChannel: "",
-        
-      }],
+          monthlyClients: "",
+          monthlySales: "",
+          totalSalesValue: "",
+          currentEmployees: "",
+          salesChannels: [],
+          otherSalesChannel: "",
+          evidenceVisitFile: []
+        },
+      ],
     },
-  })
+  });
 
-  const visit0 = form.getValues("visits")[0]
+  const visit0 = form.getValues("visits")[0];
 
   const visitForm = useForm<VisitValues>({
     resolver: zodResolver(visitSchema),
-    defaultValues: visit0
-  })
+    defaultValues: visit0,
+  });
 
   const toggleSection = (section: keyof typeof expandedSections) => {
     setExpandedSections({
       ...expandedSections,
       [section]: !expandedSections[section],
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    console.log("WATCH", form.watch())
-  }, [form])
+    console.log("WATCH", form.watch());
+  }, [form]);
 
-const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();  
-    
-    const isMainValid = await form.trigger();      
-    const isVisitValid = await visitForm.trigger(); 
-    if (!isMainValid || !isVisitValid) return;
-    const visit0Values = visitForm.getValues()
-    form.setValue("visits.0", visit0Values)
-    const allValues = form.getValues()
-    const newEntry = { id: uuidv4(), ...allValues }
+  async function submitBoth() {
+    const visitOk = await visitForm.trigger();
+    form.setValue("visits.0", visitForm.getValues(), { shouldDirty: true });
+    const mainOk = await form.trigger();
+    if (!mainOk) {
+      const e = form.formState.errors;
+      setExpandedSections((prev) => ({
+        ...prev,
+        personal: !!(e.fullName || e.firstSurname || e.gender),
+        company: !!(e.companyName || e.nit),
+        credit: !!(e.approvedCreditValue || e.disbursementDate),
+        evaluator: !!e.evaluatorObservations,
+      }));
+      return;
+    }
 
-    const arr = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]")
-    arr.push(newEntry)
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr))
-    alert("Guardado con visita incluida")
+    saveAll(form.getValues());
+  }
+
+  function saveAll(mainData: FormValues) {
+    const entry = { id: uuidv4(), ...mainData };
+    const prev = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]");
+    prev.push(entry);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(prev));
+    alert("✅ Evaluación guardada");
   }
 
   return (
     <div className="max-w-4xl mx-auto py-8 w-full">
       <FormProvider {...form}>
-        <form onSubmit={onSubmit} className="space-y-8">
+        <form className="space-y-8">
           <div className="space-y-6 border-t pt-6 mt-8">
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
               Información relacionada con el usuario
@@ -146,8 +157,6 @@ const onSubmit = async (e: React.FormEvent) => {
               isExpanded={expandedSections.evaluator}
               onToggle={() => toggleSection("evaluator")}
             />
-
-
           </div>
 
           <div className="space-y-6 border-t pt-6 mt-8">
@@ -158,7 +167,7 @@ const onSubmit = async (e: React.FormEvent) => {
               Registro detallado de la evaluación financiera y comercial.
             </p>
 
-            <FormProvider {...visitForm} >
+            <FormProvider {...visitForm}>
               <CreditEvaluation
                 isExpanded={expandedSections.creditEval}
                 onToggle={() => toggleSection("creditEval")}
@@ -173,7 +182,7 @@ const onSubmit = async (e: React.FormEvent) => {
                 isExpanded={expandedSections.commercial}
                 onToggle={() => toggleSection("commercial")}
               />
-
+              
               <VisitEvidence
                 isExpanded={expandedSections.evidenceVisit}
                 onToggle={() => toggleSection("evidenceVisit")}
@@ -183,14 +192,15 @@ const onSubmit = async (e: React.FormEvent) => {
 
           <div className="flex justify-end">
             <Button
-              type="submit"
+              type="button"
+              onClick={submitBoth}
               className="submit-button w-full sm:w-auto"
-              onClick={() => console.log(form.formState.errors)}>
+            >
               Enviar evaluación
             </Button>
           </div>
         </form>
       </FormProvider>
     </div>
-  )
+  );
 }

@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button"
 import CreditEvaluation from "@/containers/credit-evaluation"
 import FinancialDiagnosis from "@/containers/financial-diagnosis"
 import CommercialDiagnosis from "@/containers/commercial-diagnosis"
+import VisitEvidence from "@/containers/visit-evidence"
+
 
 export default function VisitForm() {
   const { id } = useParams<{ id: string; visitaNumero: string }>()
@@ -47,6 +49,7 @@ export default function VisitForm() {
         currentEmployees: "",
         salesChannels: [],
         otherSalesChannel: "",
+        evidenceVisitFile: []
     },
   })
 
@@ -92,6 +95,7 @@ export default function VisitForm() {
         <CreditEvaluation isExpanded onToggle={() => {}} />
         <FinancialDiagnosis isExpanded onToggle={() => {}} />
         <CommercialDiagnosis isExpanded onToggle={() => {}} />
+         <VisitEvidence isExpanded onToggle={() => {}} />
 
         <div className="text-right">
           <Button type="submit">Guardar Visita</Button>

@@ -74,10 +74,6 @@ export function ChartGroup({ visits }: ChartGroupProps) {
             data={mapMetric("totalSalesValue")} 
             title="Valor total de ventas" 
           />
-          <BarChartComponent
-            data={mapMetric("averageSalePrice")}
-            title="Precio promedio de venta"
-          />
         </div>
       </section>
     </div>
