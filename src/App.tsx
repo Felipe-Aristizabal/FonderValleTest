@@ -9,7 +9,7 @@ import VisitForm from "@/pages/visit-form"
 import NotFound from "./pages/not-found"
 
 function App() {
-  localStorage.clear()
+  // localStorage.clear()
   useEffect(() => {
     const STORAGE_KEY = "evaluationFormData"
 
