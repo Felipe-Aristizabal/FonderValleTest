@@ -196,7 +196,7 @@ export default function EvaluationForm() {
               onClick={submitBoth}
               className="submit-button w-full sm:w-auto"
             >
-              Enviar evaluación
+              Enviar
             </Button>
           </div>
         </form>
