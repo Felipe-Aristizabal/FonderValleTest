@@ -1,22 +1,63 @@
-import { Outlet, NavLink } from "react-router-dom"
-import { Header } from "@/containers/Header"
-import { Toaster } from "@/components/ui/sonner"
+import { Outlet, NavLink } from "react-router-dom";
+import { Header } from "@/containers/Header";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function Layout() {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header fijo con altura */}
-      <header className="sticky top-0 z-50 h-20 bg-white shadow flex items-center px-4 sm:px-8">
+      <header className="sticky top-0 z-50 h-20 bg-white shadow flex items-center px-1 sm:px-8">
         <Header />
       </header>
 
-      {/* Navbar justo debajo */}
       <nav className="sticky top-20 z-40 bg-gray-800 text-white px-4 py-3 flex flex-wrap items-center gap-4 sm:gap-6">
-        <NavLink to="/" end className={({ isActive }) => `px-3 py-2 text-base sm:text-lg font-semibold tracking-wide transition-all duration-200 ${isActive ? "text-white underline underline-offset-4 decoration-2" : "text-gray-300 hover:text-white hover:underline underline-offset-4"}`}  >
+        <NavLink
+          to="/inicio"
+          end
+          className={({ isActive }) =>
+            `px-3 py-2 text-base sm:text-lg font-semibold tracking-wide transition-all duration-200 ${
+              isActive
+                ? "text-white underline underline-offset-4 decoration-2"
+                : "text-gray-300 hover:text-white hover:underline underline-offset-4"
+            }`
+          }
+        >
           Inicio
         </NavLink>
-        <NavLink to="/formulario" className={({ isActive }) => `px-3 py-2 text-base sm:text-lg font-semibold tracking-wide transition-all duration-200 ${isActive ? "text-white underline underline-offset-4 decoration-2" : "text-gray-300 hover:text-white hover:underline underline-offset-4"}`} >
-          Asesoramiento
+        <NavLink
+          to="/beneficiarios"
+          className={({ isActive }) =>
+            `px-3 py-2 text-base sm:text-lg font-semibold tracking-wide transition-all duration-200 ${
+              isActive
+                ? "text-white underline underline-offset-4 decoration-2"
+                : "text-gray-300 hover:text-white hover:underline underline-offset-4"
+            }`
+          }
+        >
+          Beneficiarios
+        </NavLink>
+        <NavLink
+          to="/usuarios"
+          className={({ isActive }) =>
+            `px-3 py-2 text-base sm:text-lg font-semibold tracking-wide transition-all duration-200 ${
+              isActive
+                ? "text-white underline underline-offset-4 decoration-2"
+                : "text-gray-300 hover:text-white hover:underline underline-offset-4"
+            }`
+          }
+        >
+          Usuarios
+        </NavLink>
+        <NavLink
+          to="/reportes"
+          className={({ isActive }) =>
+            `px-3 py-2 text-base sm:text-lg font-semibold tracking-wide transition-all duration-200 ${
+              isActive
+                ? "text-white underline underline-offset-4 decoration-2"
+                : "text-gray-300 hover:text-white hover:underline underline-offset-4"
+            }`
+          }
+        >
+          Reportes
         </NavLink>
       </nav>
 
@@ -29,6 +70,5 @@ export default function Layout() {
       </footer>
       <Toaster />
     </div>
-  )
+  );
 }
-

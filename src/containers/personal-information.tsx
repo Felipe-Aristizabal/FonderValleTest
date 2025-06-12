@@ -89,17 +89,17 @@ export default function PersonalInformation({
           render={({ field }) => (
             <FormItem>
               <RequiredLabel>Género</RequiredLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Seleccione el género" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="male">Masculino</SelectItem>
-                  <SelectItem value="female">Femenino</SelectItem>
+                  <SelectItem value="masculino">Masculino</SelectItem>
+                  <SelectItem value="femenino">Femenino</SelectItem>
                   <SelectItem value="LGBTIQ+">LGBTIQ+</SelectItem>
-                  <SelectItem value="no answer">No responder</SelectItem>
+                  <SelectItem value="no responde">No responder</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -109,20 +109,22 @@ export default function PersonalInformation({
       </FormRow>
 
       <FormRow>
-        <FormField
-          control={form.control}
-          name="dateOfBirth"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <DatePicker
-                label="Fecha de Nacimiento"
-                value={field.value}
-                onChange={field.onChange}
-              />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <FormRow>
+          <FormField
+            control={form.control}
+            name="dateOfBirth"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <DatePicker
+                  label="Fecha de Nacimiento"
+                  value={field.value ?? null}
+                  onChange={(date) => field.onChange(date ?? "")}
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </FormRow>
 
         <FormField
           control={form.control}
@@ -137,11 +139,11 @@ export default function PersonalInformation({
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="primary">Primaria</SelectItem>
-                  <SelectItem value="secondary">Bachillerato</SelectItem>
-                  <SelectItem value="technical">Técnico</SelectItem>
-                  <SelectItem value="university">Profesional</SelectItem>
-                  <SelectItem value="postgraduate">Posgrado</SelectItem>
+                  <SelectItem value="primaria">Primaria</SelectItem>
+                  <SelectItem value="bachillerato">Bachillerato</SelectItem>
+                  <SelectItem value="tecnico">Técnico</SelectItem>
+                  <SelectItem value="profesional">Profesional</SelectItem>
+                  <SelectItem value="posgrado">Posgrado</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -165,7 +167,7 @@ export default function PersonalInformation({
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="NARP">NARP</SelectItem>
-                  <SelectItem value="indigenous">Indígena</SelectItem>
+                  <SelectItem value="indigena">Indígena</SelectItem>
                   <SelectItem value="Rom">Rom</SelectItem>
                   <SelectItem value="Mestizo">Mestizo</SelectItem>
                   <SelectItem value="None">

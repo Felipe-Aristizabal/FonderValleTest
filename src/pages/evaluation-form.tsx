@@ -47,7 +47,6 @@ export default function EvaluationForm() {
           timeToResults: "",
           resultsAsExpected: "",
           resultsExplanation: "",
-          evidenceFile: [],
           financialRecords: "",
           resourceManager: "",
           otherResourceManager: "",
@@ -71,7 +70,7 @@ export default function EvaluationForm() {
           currentEmployees: "",
           salesChannels: [],
           otherSalesChannel: "",
-          evidenceVisitFile: []
+          evidenceVisitFile: [],
         },
       ],
     },
@@ -82,6 +81,8 @@ export default function EvaluationForm() {
   const visitForm = useForm<VisitValues>({
     resolver: zodResolver(visitSchema),
     defaultValues: visit0,
+    mode: "onChange",
+    reValidateMode: "onChange",
   });
 
   const toggleSection = (section: keyof typeof expandedSections) => {
@@ -96,7 +97,7 @@ export default function EvaluationForm() {
   }, [form]);
 
   async function submitBoth() {
-    const visitOk = await visitForm.trigger();
+    // const visitOk = await visitForm.trigger();
     form.setValue("visits.0", visitForm.getValues(), { shouldDirty: true });
     const mainOk = await form.trigger();
     if (!mainOk) {
@@ -182,7 +183,7 @@ export default function EvaluationForm() {
                 isExpanded={expandedSections.commercial}
                 onToggle={() => toggleSection("commercial")}
               />
-              
+
               <VisitEvidence
                 isExpanded={expandedSections.evidenceVisit}
                 onToggle={() => toggleSection("evidenceVisit")}

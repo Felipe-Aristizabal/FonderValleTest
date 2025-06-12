@@ -5,14 +5,13 @@ export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, value, type, defaultValue, ...props }, ref) => {
-    const safeValue = value ?? ""
+  ({ className, value, onChange, defaultValue, type, ...props }, ref) => {
+    const isControlled = value !== undefined
 
     return (
       <input
-        ref={ref}                // 👉 aquí recibe la ref
+        ref={ref}
         type={type}
-        value={safeValue} 
         className={cn(
           "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm " +
             "ring-offset-background placeholder:text-muted-foreground " +
@@ -20,10 +19,14 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             "focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
           className
         )}
+        {...(isControlled
+          ? { value, onChange, readOnly: !onChange }
+          : { defaultValue })}
         {...props}
       />
     )
   }
 )
+
 
 Input.displayName = "Input"

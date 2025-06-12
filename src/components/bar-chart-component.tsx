@@ -1,46 +1,73 @@
-"use client"
+"use client";
 
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+} from "recharts";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface ChartData {
-  name: string
-  value: number
+  name: string;
+  value: number;
 }
 
 interface BarChartComponentProps {
-  data: ChartData[]
-  title: string
+  data: ChartData[];
+  title: string;
 }
 
-const BAR_COLORS = ["#0D3450", "#5DA73A", "#ED8936", "#6B46C1", "#10B981", "#EF4444"]
+const BAR_COLORS = [
+  "#0D3450",
+  "#5DA73A",
+  "#ED8936",
+  "#6B46C1",
+  "#10B981",
+  "#EF4444",
+];
 
-export default function BarChartComponent({ data, title }: BarChartComponentProps) {
+export default function BarChartComponent({
+  data,
+  title,
+}: BarChartComponentProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
+    <Card className="h-full rounded-lg border-gray-200 shadow-sm">
+      <CardHeader className=" border-b border-blue-200 px-4 py-2">
+        <CardTitle className="text-sm font-semibold text-gray-700 tracking-wide uppercase">
+          {title}
+        </CardTitle>
       </CardHeader>
       <CardContent className="h-[300px]">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
-            <YAxis tickFormatter={(value) => {
-              if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`
-              if (value >= 1_000) return `${(value / 1_000).toFixed(0)}K`
-              return value
-            }} />
+            <YAxis
+              tickFormatter={(value) => {
+                if (value >= 1_000_000)
+                  return `${(value / 1_000_000).toFixed(1)}M`;
+                if (value >= 1_000) return `${(value / 1_000).toFixed(0)}K`;
+                return value;
+              }}
+            />
 
             <Tooltip />
             <Bar dataKey="value" radius={[4, 4, 0, 0]}>
               {data.map((_, index) => (
-                <Cell key={`cell-${index}`} fill={BAR_COLORS[index % BAR_COLORS.length]} />
+                <Cell
+                  key={`cell-${index}`}
+                  fill={BAR_COLORS[index % BAR_COLORS.length]}
+                />
               ))}
             </Bar>
           </BarChart>
         </ResponsiveContainer>
       </CardContent>
     </Card>
-  )
+  );
 }

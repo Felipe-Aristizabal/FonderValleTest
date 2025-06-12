@@ -1,26 +1,45 @@
-import type { UseFormReturn } from "react-hook-form"
+import type { UseFormReturn } from "react-hook-form";
 
-import { FormSection } from "@/components/ui/form-section"
-import { FormRow } from "@/components/ui/form-row"
-import { RequiredLabel } from "@/components/ui/required-label"
-import { Input } from "@/components/ui/input"
-import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import type { FormValues } from "@/lib/form-schema"
-//data imports
+import { FormSection } from "@/components/ui/form-section";
+import { FormRow } from "@/components/ui/form-row";
+import { RequiredLabel } from "@/components/ui/required-label";
+import { Input } from "@/components/ui/input";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import type { FormValues } from "@/lib/form-schema";
+
 import municipiosValle from "@/data/municipios-valle.json";
 import economicSectorArea from "@/data/economic-sectors.json";
 
 interface CompanyInformationProps {
-  form: UseFormReturn<FormValues>
-  isExpanded: boolean
-  onToggle: () => void
+  form: UseFormReturn<FormValues>;
+  isExpanded: boolean;
+  onToggle: () => void;
 }
 
-export default function CompanyInformation({ form, isExpanded, onToggle }: CompanyInformationProps) {
+export default function CompanyInformation({
+  form,
+  isExpanded,
+  onToggle,
+}: CompanyInformationProps) {
   return (
-    <FormSection title="2.  Información de la empresa" isExpanded={isExpanded} onToggle={onToggle}>
-      <FormRow >
+    <FormSection
+      title="2.  Información de la empresa"
+      isExpanded={isExpanded}
+      onToggle={onToggle}
+    >
+      <FormRow>
         <FormField
           control={form.control}
           name="companyName"
@@ -28,7 +47,10 @@ export default function CompanyInformation({ form, isExpanded, onToggle }: Compa
             <FormItem>
               <RequiredLabel>Nombre de la Empresa</RequiredLabel>
               <FormControl>
-                <Input placeholder="Ingrese el nombre de la empresa" {...field} />
+                <Input
+                  placeholder="Ingrese el nombre de la empresa"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -42,7 +64,10 @@ export default function CompanyInformation({ form, isExpanded, onToggle }: Compa
             <FormItem>
               <RequiredLabel>RUT</RequiredLabel>
               <FormControl>
-                <Input placeholder="Ingrese RUT, no se olvide del dígito de verificación" {...field} />
+                <Input
+                  placeholder="Ingrese RUT, no se olvide del dígito de verificación"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -64,10 +89,10 @@ export default function CompanyInformation({ form, isExpanded, onToggle }: Compa
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="primary">Primario</SelectItem>
-                  <SelectItem value="secundary">Secundario</SelectItem>
-                  <SelectItem value="tertiary">Terciario</SelectItem>
-                  <SelectItem value="other">Otro</SelectItem>
+                  <SelectItem value="primario">Primario</SelectItem>
+                  <SelectItem value="secundario">Secundario</SelectItem>
+                  <SelectItem value="terciario">Terciario</SelectItem>
+                  <SelectItem value="otro">Otro</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -99,9 +124,9 @@ export default function CompanyInformation({ form, isExpanded, onToggle }: Compa
           )}
         />
       </FormRow>
-          
+
       <FormRow>
-          <FormField
+        <FormField
           control={form.control}
           name="city"
           render={({ field }) => (
@@ -126,21 +151,20 @@ export default function CompanyInformation({ form, isExpanded, onToggle }: Compa
             </FormItem>
           )}
         />
-      <FormField
-        control={form.control}
-        name="address"
-        render={({ field }) => (
-          <FormItem>
-            <RequiredLabel>Dirección de la empresa</RequiredLabel>
-            <FormControl>
-              <Input placeholder="Ingrese la dirección" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+        <FormField
+          control={form.control}
+          name="address"
+          render={({ field }) => (
+            <FormItem>
+              <RequiredLabel>Dirección de la empresa</RequiredLabel>
+              <FormControl>
+                <Input placeholder="Ingrese la dirección" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
       </FormRow>
-
     </FormSection>
-  )
+  );
 }

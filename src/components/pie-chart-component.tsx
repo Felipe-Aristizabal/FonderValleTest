@@ -28,20 +28,22 @@ const COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899"
 
 export default function PieChartComponent({ data, title }: PieChartComponentProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-gray-800">{title}</CardTitle>
-      </CardHeader>
+    <Card className="h-full rounded-lg border-gray-200 shadow-sm">
+      <CardHeader className=" border-b border-blue-200 px-4 py-2">
+  <CardTitle className="text-sm font-semibold text-gray-700 tracking-wide uppercase">
+    {title}
+  </CardTitle>
+</CardHeader>
 
       <CardContent className="flex flex-col sm:flex-row sm:items-center sm:gap-6">
-        <div className="w-full sm:w-1/2 h-[220px]">
+        <div className="w-full sm:w-1/2 aspect-square min-w-0">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
                 data={data}
                 cx="50%"
                 cy="50%"
-                outerRadius={80}
+                outerRadius="80%"
                 fill="#8884d8"
                 dataKey="value"
                 nameKey="name"

@@ -26,19 +26,14 @@ export function UsersList({
 
   if (users.length === 0) {
     return (
-      (
       <div className="w-full  min-w-20 max-w-4xl mx-auto rounded-xl shadow-lg p-6 space-y-6 border border-gray-800 bg-white">
         <div className="text-center space-y-3">
-          <h2 className="text-3xl font-bold text-gray-800">Usuarios Guardados</h2>
-          <p className="text-gray-600 text-base">
-            
-        No hay datos guardados:
-          
-      </p>
+          <h2 className="text-3xl font-bold text-gray-800">
+            Usuarios Guardados
+          </h2>
+          <p className="text-gray-600 text-base">No hay datos guardados:</p>
         </div>
       </div>
-    )
-    
     );
   }
 
@@ -77,7 +72,7 @@ export function UsersList({
           return (
             <li key={idx}>
               <button
-                onClick={() => navigate(`/evaluaciones/${u.id}`)}
+                onClick={() => navigate(`/detalles/${u.id}`)}
                 className={`flex flex-col sm:flex-row sm:justify-between items-start sm:items-center w-full 
                 text-left px-5 py-4 rounded-lg border border-gray-800
                 ${visits.length > 0 ? "bg-blue-50" : "bg-white"} 

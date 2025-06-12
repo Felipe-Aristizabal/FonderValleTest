@@ -1,433 +1,72 @@
 [
   {
     "id": "913e3aac-3f0a-4130-8ba4-beaa9d97182c",
-    "fullName": "Ana María",
-    "firstSurname": "Rodríguez",
-    "secondSurname": "Lopez",
-    "gender": "Femenino",
-    "dateOfBirth": "1990-01-15T00:00:00+00:00",
-    "educationalProfile": "Universitario",
-    "ethnicity": "Rom",
+    "fullName": "Ana María Rodríguez",
     "nationalId": "1001",
-    "phoneNumber": "300123450",
-    "companyName": "Empresa 1",
-    "nit": "123456780-1",
-    "economicSector": "Primario",
-    "mainSector": "Comercio",
-    "city": "Tuluá",
-    "address": "Calle 10 No. 20-30",
-    "approvedCreditValue": "10000000",
-    "disbursementDate": "2025-04-29T00:00:00+00:00",
-    "creditDestination": [
-      "Compra de maquinaria"
-    ],
-    "otherCreditDestination": "",
-    "evaluatorObservations": "Observación del evaluador 1",
-    "visits": [
-      {
-        "date": "2025-05-16T00:00:00+00:00",
-        "creditUsedAsApproved": "Sí",
-        "creditUsageDescription": "Usado para expansión",
-        "improvements": [
-          "Aumento de ingresos"
-        ],
-        "otherImprovement": "",
-        "timeToResults": "3 meses",
-        "resultsAsExpected": "Sí",
-        "resultsExplanation": "Se evidencian mejoras.",
-        "financialRecords": "No",
-        "evidenceFile": [],
-        "resourceManager": "El beneficiario",
-        "otherResourceManager": "",
-        "paymentsOnSchedule": "No",
-        "paymentExplanation": "",
-        "satisfaction": "Satisfecho",
-        "needAnotherCredit": "Tal vez",
-        "creditIntendedUse": "Reinvertir",
-        "monthlyIncome": "1200000",
-        "fixedCosts": "400000",
-        "variableCosts": "300000",
-        "debtLevel": "15",
-        "creditUsedPercentage": "50",
-        "monthlyPayment": "200000",
-        "emergencyReserve": "100000",
-        "monthlyClients": "40",
-        "monthlySales": "35",
-        "totalSalesValue": "1500000",
-        "currentEmployees": "De 5 a 10",
-        "salesChannels": [
-          "Online"
-        ],
-        "otherSalesChannel": "",
-        "evidenceVisitFile": []
-      },
-      {
-        "date": "2025-05-16",
-        "creditUsedAsApproved": "Sí",
-        "creditUsageDescription": "Usado para expansión",
-        "improvements": [
-          "Generación de empleo"
-        ],
-        "otherImprovement": "",
-        "timeToResults": "3 meses",
-        "resultsAsExpected": "Sí",
-        "resultsExplanation": "Se evidencian mejoras.",
-        "financialRecords": "Sí",
-        "evidenceFile": [],
-        "resourceManager": "El beneficiario",
-        "otherResourceManager": "",
-        "paymentsOnSchedule": "Sí",
-        "paymentExplanation": "",
-        "satisfaction": "Muy satisfecho",
-        "needAnotherCredit": "No",
-        "creditIntendedUse": "Reinvertir",
-        "monthlyIncome": "1320000",
-        "fixedCosts": "360000",
-        "variableCosts": "270000",
-        "debtLevel": "15",
-        "creditUsedPercentage": "50",
-        "monthlyPayment": "220000",
-        "emergencyReserve": "90000",
-        "monthlyClients": "44",
-        "monthlySales": "35",
-        "totalSalesValue": "1650000",
-        "currentEmployees": "De 5 a 10",
-        "salesChannels": [
-          "Ferias"
-        ],
-        "otherSalesChannel": "",
-        "evidenceVisitFile": []
-      }
-    ]
+    "role": "Beneficiario",
+    "appState": "Activo"
   },
   {
     "id": "e2654758-f71a-4517-8360-cb0ffaf09d9e",
-    "fullName": "Luis Alberto",
-    "firstSurname": "Gómez",
-    "secondSurname": "Sánchez",
-    "gender": "Masculino",
-    "dateOfBirth": "1990-01-15T00:00:00+00:00",
-    "educationalProfile": "Técnico",
-    "ethnicity": "Mestizo",
+    "fullName": "Luis Alberto Gómez",
     "nationalId": "1002",
-    "phoneNumber": "300123451",
-    "companyName": "Empresa 2",
-    "nit": "123456781-1",
-    "economicSector": "Primario",
-    "mainSector": "Agricultura",
-    "city": "Buenaventura",
-    "address": "Calle 11 No. 21-31",
-    "approvedCreditValue": "11000000",
-    "disbursementDate": "2025-04-29T00:00:00+00:00",
-    "creditDestination": [
-      "Inversión en personal"
-    ],
-    "otherCreditDestination": "",
-    "evaluatorObservations": "Observación del evaluador 2",
-    "visits": [
-      {
-        "date": "2025-05-16T00:00:00+00:00",
-        "creditUsedAsApproved": "Parcialmente",
-        "creditUsageDescription": "Usado para expansión",
-        "improvements": [
-          "Aumento de ingresos"
-        ],
-        "otherImprovement": "",
-        "timeToResults": "3 meses",
-        "resultsAsExpected": "No",
-        "resultsExplanation": "Se evidencian mejoras.",
-        "financialRecords": "Sí",
-        "evidenceFile": [],
-        "resourceManager": "El beneficiario",
-        "otherResourceManager": "",
-        "paymentsOnSchedule": "Parcialmente",
-        "paymentExplanation": "",
-        "satisfaction": "Insatisfecho",
-        "needAnotherCredit": "No",
-        "creditIntendedUse": "Reinvertir",
-        "monthlyIncome": "1200000",
-        "fixedCosts": "400000",
-        "variableCosts": "300000",
-        "debtLevel": "15",
-        "creditUsedPercentage": "50",
-        "monthlyPayment": "200000",
-        "emergencyReserve": "100000",
-        "monthlyClients": "40",
-        "monthlySales": "35",
-        "totalSalesValue": "1500000",
-        "currentEmployees": "De 5 a 10",
-        "salesChannels": [
-          "Tienda física"
-        ],
-        "otherSalesChannel": "",
-        "evidenceVisitFile": []
-      },
-      {
-        "date": "2025-05-16",
-        "creditUsedAsApproved": "Sí",
-        "creditUsageDescription": "Usado para expansión",
-        "improvements": [
-          "Adquisición de activos"
-        ],
-        "otherImprovement": "",
-        "timeToResults": "3 meses",
-        "resultsAsExpected": "Sí",
-        "resultsExplanation": "Se evidencian mejoras.",
-        "financialRecords": "Sí",
-        "evidenceFile": [],
-        "resourceManager": "El beneficiario",
-        "otherResourceManager": "",
-        "paymentsOnSchedule": "Sí",
-        "paymentExplanation": "",
-        "satisfaction": "Muy satisfecho",
-        "needAnotherCredit": "No",
-        "creditIntendedUse": "Reinvertir",
-        "monthlyIncome": "1320000",
-        "fixedCosts": "440000",
-        "variableCosts": "330000",
-        "debtLevel": "15",
-        "creditUsedPercentage": "50",
-        "monthlyPayment": "180000",
-        "emergencyReserve": "110000",
-        "monthlyClients": "44",
-        "monthlySales": "35",
-        "totalSalesValue": "1350000",
-        "currentEmployees": "De 5 a 10",
-        "salesChannels": [
-          "Redes"
-        ],
-        "otherSalesChannel": "",
-        "evidenceVisitFile": []
-      },
-      {
-        "date": "2025-05-16",
-        "creditUsedAsApproved": "Sí",
-        "creditUsageDescription": "Usado para expansión",
-        "improvements": [
-          "Adquisición de activos"
-        ],
-        "otherImprovement": "",
-        "timeToResults": "3 meses",
-        "resultsAsExpected": "Sí",
-        "resultsExplanation": "Se evidencian mejoras.",
-        "financialRecords": "Sí",
-        "evidenceFile": [],
-        "resourceManager": "El beneficiario",
-        "otherResourceManager": "",
-        "paymentsOnSchedule": "Sí",
-        "paymentExplanation": "",
-        "satisfaction": "Muy satisfecho",
-        "needAnotherCredit": "No",
-        "creditIntendedUse": "Reinvertir",
-        "monthlyIncome": "1440000",
-        "fixedCosts": "480000",
-        "variableCosts": "240000",
-        "debtLevel": "15",
-        "creditUsedPercentage": "50",
-        "monthlyPayment": "240000",
-        "emergencyReserve": "120000",
-        "monthlyClients": "32",
-        "monthlySales": "35",
-        "totalSalesValue": "1200000",
-        "currentEmployees": "De 5 a 10",
-        "salesChannels": [
-          "Tienda física"
-        ],
-        "otherSalesChannel": "",
-        "evidenceVisitFile": []
-      }
-    ]
+    "role": "Beneficiario",
+    "appState": "Inactivo"
   },
   {
     "id": "a4b71735-5e48-4f7e-b893-bdf4803de3e6",
-    "fullName": "Carmen",
-    "firstSurname": "Torres",
-    "secondSurname": "Mejía",
-    "gender": "Masculino",
-    "dateOfBirth": "1990-01-15T00:00:00+00:00",
-    "educationalProfile": "Secundaria",
-    "ethnicity": "Afro",
+    "fullName": "Carmen Torres Mejía",
     "nationalId": "1003",
-    "phoneNumber": "300123452",
-    "companyName": "Empresa 3",
-    "nit": "123456782-1",
-    "economicSector": "Terciario",
-    "mainSector": "Agricultura",
-    "city": "Dagua",
-    "address": "Calle 12 No. 22-32",
-    "approvedCreditValue": "12000000",
-    "disbursementDate": "2025-04-29T00:00:00+00:00",
-    "creditDestination": [
-      "Publicidad"
-    ],
-    "otherCreditDestination": "",
-    "evaluatorObservations": "Observación del evaluador 3",
-    "visits": [
-      {
-        "date": "2025-05-16T00:00:00+00:00",
-        "creditUsedAsApproved": "No",
-        "creditUsageDescription": "Usado para expansión",
-        "improvements": [
-          "Adquisición de activos"
-        ],
-        "otherImprovement": "",
-        "timeToResults": "3 meses",
-        "resultsAsExpected": "No",
-        "resultsExplanation": "Se evidencian mejoras.",
-        "financialRecords": "Sí",
-        "evidenceFile": [],
-        "resourceManager": "El beneficiario",
-        "otherResourceManager": "",
-        "paymentsOnSchedule": "Sí",
-        "paymentExplanation": "",
-        "satisfaction": "Satisfecho",
-        "needAnotherCredit": "Tal vez",
-        "creditIntendedUse": "Reinvertir",
-        "monthlyIncome": "1200000",
-        "fixedCosts": "400000",
-        "variableCosts": "300000",
-        "debtLevel": "15",
-        "creditUsedPercentage": "50",
-        "monthlyPayment": "200000",
-        "emergencyReserve": "100000",
-        "monthlyClients": "40",
-        "monthlySales": "35",
-        "totalSalesValue": "1500000",
-        "currentEmployees": "De 5 a 10",
-        "salesChannels": [
-          "Ferias"
-        ],
-        "otherSalesChannel": "",
-        "evidenceVisitFile": []
-      }
-    ]
+    "role": "Beneficiario",
+    "appState": "Activo"
   },
   {
     "id": "a52f963b-0e03-428b-af51-da34344e01bb",
-    "fullName": "Esteban",
-    "firstSurname": "Muñoz",
-    "secondSurname": "Pérez",
-    "gender": "Femenino",
-    "dateOfBirth": "1990-01-15T00:00:00+00:00",
-    "educationalProfile": "Primaria",
-    "ethnicity": "Rom",
+    "fullName": "Esteban Muñoz Pérez",
     "nationalId": "1004",
-    "phoneNumber": "300123453",
-    "companyName": "Empresa 4",
-    "nit": "123456783-1",
-    "economicSector": "Terciario",
-    "mainSector": "Agricultura",
-    "city": "Cali",
-    "address": "Calle 13 No. 23-33",
-    "approvedCreditValue": "13000000",
-    "disbursementDate": "2025-04-29T00:00:00+00:00",
-    "creditDestination": [
-      "Infraestructura"
-    ],
-    "otherCreditDestination": "",
-    "evaluatorObservations": "Observación del evaluador 4",
-    "visits": [
-      {
-        "date": "2025-05-16T00:00:00+00:00",
-        "creditUsedAsApproved": "No",
-        "creditUsageDescription": "Usado para expansión",
-        "improvements": [
-          "Aumento de ingresos"
-        ],
-        "otherImprovement": "",
-        "timeToResults": "3 meses",
-        "resultsAsExpected": "Sí",
-        "resultsExplanation": "Se evidencian mejoras.",
-        "financialRecords": "Sí",
-        "evidenceFile": [],
-        "resourceManager": "El beneficiario",
-        "otherResourceManager": "",
-        "paymentsOnSchedule": "Parcialmente",
-        "paymentExplanation": "",
-        "satisfaction": "Poco satisfecho",
-        "needAnotherCredit": "Sí",
-        "creditIntendedUse": "Reinvertir",
-        "monthlyIncome": "1200000",
-        "fixedCosts": "400000",
-        "variableCosts": "300000",
-        "debtLevel": "15",
-        "creditUsedPercentage": "50",
-        "monthlyPayment": "200000",
-        "emergencyReserve": "100000",
-        "monthlyClients": "40",
-        "monthlySales": "35",
-        "totalSalesValue": "1500000",
-        "currentEmployees": "De 5 a 10",
-        "salesChannels": [
-          "Ferias"
-        ],
-        "otherSalesChannel": "",
-        "evidenceVisitFile": []
-      }
-    ]
+    "role": "Beneficiario",
+    "appState": "Activo"
   },
   {
     "id": "29205042-7da7-46dd-a01e-43ddae5234ae",
-    "fullName": "Lucía",
-    "firstSurname": "Martínez",
-    "secondSurname": "García",
-    "gender": "Femenino",
-    "dateOfBirth": "1990-01-15T00:00:00+00:00",
-    "educationalProfile": "Universitario",
-    "ethnicity": "Afro",
+    "fullName": "Lucía Martínez García",
     "nationalId": "1005",
-    "phoneNumber": "300123454",
-    "companyName": "Empresa 5",
-    "nit": "123456784-1",
-    "economicSector": "Terciario",
-    "mainSector": "Tecnología",
-    "city": "Cali",
-    "address": "Calle 14 No. 24-34",
-    "approvedCreditValue": "14000000",
-    "disbursementDate": "2025-04-29T00:00:00+00:00",
-    "creditDestination": [
-      "Otros"
-    ],
-    "otherCreditDestination": "",
-    "evaluatorObservations": "Observación del evaluador 5",
-    "visits": [
-      {
-        "date": "2025-05-16T00:00:00+00:00",
-        "creditUsedAsApproved": "Sí",
-        "creditUsageDescription": "Usado para expansión",
-        "improvements": [
-          "Adquisición de activos"
-        ],
-        "otherImprovement": "",
-        "timeToResults": "3 meses",
-        "resultsAsExpected": "Sí",
-        "resultsExplanation": "Se evidencian mejoras.",
-        "financialRecords": "No",
-        "evidenceFile": [],
-        "resourceManager": "El beneficiario",
-        "otherResourceManager": "",
-        "paymentsOnSchedule": "Sí",
-        "paymentExplanation": "",
-        "satisfaction": "Muy satisfecho",
-        "needAnotherCredit": "No",
-        "creditIntendedUse": "Reinvertir",
-        "monthlyIncome": "1200000",
-        "fixedCosts": "400000",
-        "variableCosts": "300000",
-        "debtLevel": "15",
-        "creditUsedPercentage": "50",
-        "monthlyPayment": "200000",
-        "emergencyReserve": "100000",
-        "monthlyClients": "40",
-        "monthlySales": "35",
-        "totalSalesValue": "1500000",
-        "currentEmployees": "De 5 a 10",
-        "salesChannels": [
-          "Ferias"
-        ],
-        "otherSalesChannel": "",
-        "evidenceVisitFile": []
-      }
-    ]
+    "role": "Beneficiario",
+    "appState": "Inactivo"
+  },
+  {
+    "id": "d4f1c2e8-7f3b-4a6d-9b5e-2a1f3c4d5e6f",
+    "fullName": "Javier Martínez López",
+    "nationalId": "2001",
+    "role": "Administrador",
+    "appState": "Activo"
+  },
+  {
+    "id": "a7b8c9d0-e1f2-3a4b-5c6d-7e8f9a0b1c2d",
+    "fullName": "Mariana González Pérez",
+    "nationalId": "2002",
+    "role": "Asesor",
+    "appState": "Activo"
+  },
+  {
+    "id": "f0e1d2c3-b4a5-6789-0abc-def123456789",
+    "fullName": "Carlos Ramírez Torres",
+    "nationalId": "2003",
+    "role": "Administrador",
+    "appState": "Inactivo"
+  },
+  {
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "fullName": "Daniela Suárez Castillo",
+    "nationalId": "2004",
+    "role": "Asesor",
+    "appState": "Activo"
+  },
+  {
+    "id": "9f8e7d6c-5b4a-3c2d-1e0f-a123b456c789",
+    "fullName": "Andrés Vega Morales",
+    "nationalId": "2005",
+    "role": "Administrador",
+    "appState": "Inactivo"
   }
 ]

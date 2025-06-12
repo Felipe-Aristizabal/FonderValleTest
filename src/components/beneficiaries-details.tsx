@@ -40,17 +40,17 @@ const sectionedFieldLabels: Record<string, Record<string, string>> = {
 
 type FormValues = Record<string, any>;
 
-export interface UserDetailsExport {
+export interface BeneficiariesDetailsExport {
   storageKey?: string;
   userId: string;
   onExportData?: (data: ExportItem[]) => void;
 }
 
-export function UserDetails({
+export function BeneficiariesDetails({
   storageKey = "fallbackKey",
   userId,
   onExportData,
-}: UserDetailsExport) {
+}: BeneficiariesDetailsExport) {
   const [userData, setUserData] = useState<FormValues | null>(null);
 
   useEffect(() => {
@@ -117,7 +117,9 @@ export function UserDetails({
                 fields={fieldsMap}
                 userData={userData}
                 editValue={""}
-                setEditValue={() => {}}
+                setEditValue={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
               />
             )
           )}

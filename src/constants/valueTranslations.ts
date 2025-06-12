@@ -1,5 +1,3 @@
-// src/constants/valueTranslations.ts
-
 export const valueTranslations: Record<string, Record<string, string>> = {
   gender: {
     male: "Masculino",
@@ -12,7 +10,7 @@ export const valueTranslations: Record<string, Record<string, string>> = {
     indigenous: "Indígena",
     Rom: "Rom",
     Mestizo: "Mestizo",
-    None: "Ninguno de los anteriores"
+    None: "Ninguno de los anteriores",
   },
   educationalProfile: {
     primary: "Primaria",
@@ -27,7 +25,7 @@ export const valueTranslations: Record<string, Record<string, string>> = {
     secundary: "Secundario",
     tertiary: "Terciario",
     other: "Otro",
- },
+  },
   mainSector: {
     financial: "Financiero",
     constructionIndustry: "Industria de la construcción",
@@ -52,7 +50,7 @@ export const valueTranslations: Record<string, Record<string, string>> = {
     tourism: "Turismo",
     healthcare: "Salud",
     cosmeticsAndHygiene: "Cosméticos y aseo",
-    others: "Otros"
+    others: "Otros",
   },
   city: {
     alcala: "Alcalá",
@@ -96,7 +94,7 @@ export const valueTranslations: Record<string, Record<string, string>> = {
     vijes: "Vijes",
     yotoco: "Yotoco",
     yumbo: "Yumbo",
-    zarzal: "Zarzal"
+    zarzal: "Zarzal",
   },
   creditUsedAsIntended: {
     yes: "Sí",
@@ -145,4 +143,4 @@ export const valueTranslations: Record<string, Record<string, string>> = {
     employment: "Generación de empleo",
     other: "Otro",
   },
-}
+};
