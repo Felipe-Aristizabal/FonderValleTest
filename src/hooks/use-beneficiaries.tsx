@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { formSchema } from "@/lib/form-schema";
-import axios from "axios";
+// import axios from "axios";
 import type { Visit } from "@/types/visit";
 
 // === Modelo de Beneficiario ===
@@ -45,14 +45,14 @@ export function useBeneficiaries() {
       let apiData: Beneficiary[] = [];
       let localData: Beneficiary[] = [];
 
-      try {
-        const resp = await axios.get<Beneficiary[]>("/api/beneficiaries");
-        if (Array.isArray(resp.data)) {
-          apiData = resp.data.map((b) => ({ ...b, source: "api" }));
-        }
-      } catch (error) {
-        console.error("Error fetching beneficiaries from API:", error);
-      }
+      // try {
+      //   const resp = await axios.get<Beneficiary[]>("/api/beneficiaries");
+      //   if (Array.isArray(resp.data)) {
+      //     apiData = resp.data.map((b) => ({ ...b, source: "api" }));
+      //   }
+      // } catch (error) {
+      //   console.error("Error fetching beneficiaries from API:", error);
+      // }
 
       try {
         const raw = localStorage.getItem(STORAGE_KEY) ?? "[]";

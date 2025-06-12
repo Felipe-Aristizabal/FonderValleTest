@@ -65,7 +65,7 @@ export function UsersPage() {
       label: "Nombre o Apellido",
       placeholder: "Nombre o Apellido",
     },
-    { name: "cedula", label: "Cedula", placeholder: "Cedula" },
+    { name: "cedula", label: "Cédula", placeholder: "Cédula" },
     { name: "role", label: "Rol", placeholder: "Rol" },
     { name: "appState", label: "Estado", placeholder: "Estado" },
   ];
