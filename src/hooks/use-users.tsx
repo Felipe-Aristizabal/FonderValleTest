@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+// import axios from "axios";
 
 export interface ApiUser {
   id: string;
@@ -23,13 +23,13 @@ export function useUsers() {
   const [all, setAll] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const mapApiToUser = (u: ApiUser): User => ({
-    id: u.id,
-    fullName: u.fullName,
-    nationalId: u.nationalId,
-    role: u.role,
-    appState: u.appState,
-  });
+  // const mapApiToUser = (u: ApiUser): User => ({
+  //   id: u.id,
+  //   fullName: u.fullName,
+  //   nationalId: u.nationalId,
+  //   role: u.role,
+  //   appState: u.appState,
+  // });
 
   useEffect(() => {
     async function fetchData() {
@@ -38,14 +38,14 @@ export function useUsers() {
       let apiUsers: User[] = [];
       let localUsers: User[] = [];
 
-      try {
-        const res = await axios.get<ApiUser[]>("/api/users");
-        if (Array.isArray(res.data)) {
-          apiUsers = res.data.map(mapApiToUser);
-        }
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
+      // try {
+      //   const res = await axios.get<ApiUser[]>("/api/users");
+      //   if (Array.isArray(res.data)) {
+      //     apiUsers = res.data.map(mapApiToUser);
+      //   }
+      // } catch (error) {
+      //   console.error("Error fetching users:", error);
+      // }
 
       try {
         const raw = localStorage.getItem(STORAGE_KEY) ?? "[]";
