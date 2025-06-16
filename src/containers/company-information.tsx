@@ -44,7 +44,7 @@ export default function CompanyInformation({
           control={form.control}
           name="companyName"
           render={({ field }) => (
-            <FormItem>
+            <FormItem id="companyName-field">
               <RequiredLabel>Nombre de la Empresa</RequiredLabel>
               <FormControl>
                 <Input
@@ -61,7 +61,7 @@ export default function CompanyInformation({
           control={form.control}
           name="nit"
           render={({ field }) => (
-            <FormItem>
+            <FormItem  id="nit-field">
               <RequiredLabel>RUT</RequiredLabel>
               <FormControl>
                 <Input
@@ -80,7 +80,7 @@ export default function CompanyInformation({
           control={form.control}
           name="economicSector"
           render={({ field }) => (
-            <FormItem>
+            <FormItem id="economicSector-field">
               <RequiredLabel>Nivel del Sector Económico</RequiredLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
@@ -103,7 +103,7 @@ export default function CompanyInformation({
           control={form.control}
           name="mainSector"
           render={({ field }) => (
-            <FormItem>
+            <FormItem id="mainSector-field">
               <RequiredLabel>Actividad económica</RequiredLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
@@ -130,7 +130,7 @@ export default function CompanyInformation({
           control={form.control}
           name="city"
           render={({ field }) => (
-            <FormItem>
+            <FormItem id="city-field">
               <RequiredLabel>Ciudad</RequiredLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
@@ -155,7 +155,7 @@ export default function CompanyInformation({
           control={form.control}
           name="address"
           render={({ field }) => (
-            <FormItem>
+            <FormItem id="address-field">
               <RequiredLabel>Dirección de la empresa</RequiredLabel>
               <FormControl>
                 <Input placeholder="Ingrese la dirección" {...field} />

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
+import type { FieldErrors } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 
 import type { FormValues } from "@/lib/form-schema";
@@ -74,31 +75,42 @@ export default function EvaluationBeneficiariesForm() {
     reValidateMode: "onChange",
   });
 
-  const toggleSection = (section: keyof typeof expandedSections) => {
+  // ✅ Manejo de errores: scroll y foco al primer campo
+  const onError = (errors: FieldErrors<FormValues>) => {
+    if (!errors) return;
+
+    const firstErrorField = Object.keys(errors)[0];
+    const errorElement = document.getElementById(`${firstErrorField}-field`);
+
+    if (errorElement) {
+      errorElement.scrollIntoView({ behavior: "smooth", block: "center" });
+      const input = errorElement.querySelector(
+        "input, select, textarea, button"
+      );
+      if (input) {
+        (input as HTMLElement).focus();
+      }
+    }
+
+    // También expandimos secciones con errores
     setExpandedSections((prev) => ({
       ...prev,
-      [section]: !prev[section],
+      personal:
+        prev.personal ||
+        !!(errors.fullName || errors.firstSurname || errors.gender),
+      company: prev.company || !!(errors.companyName || errors.nit),
+      credit:
+        prev.credit ||
+        !!(errors.approvedCreditValue || errors.disbursementDate),
+      evaluator: prev.evaluator || !!errors.evaluatorObservations,
     }));
   };
 
-  async function submitBeneficiaries() {
-    const isValid = await form.trigger();
-    if (!isValid) {
-      const e = form.formState.errors;
-      setExpandedSections((prev) => ({
-        ...prev,
-        personal: prev.personal || !!(e.fullName || e.firstSurname || e.gender),
-        company: prev.company || !!(e.companyName || e.nit),
-        credit: prev.credit || !!(e.approvedCreditValue || e.disbursementDate),
-        evaluator: prev.evaluator || !!e.evaluatorObservations,
-      }));
-      return;
-    }
-
+  const onValidSubmit = () => {
     const entry = {
       id: uuidv4(),
       ...form.getValues(),
-      appState: "Inactivo",
+      appState: "Activo",
       role: "Beneficiario",
     };
 
@@ -108,12 +120,15 @@ export default function EvaluationBeneficiariesForm() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(prev));
     form.reset();
     setDialogOpen(true);
-  }
+  };
 
   return (
     <div className="max-w-3xl mx-auto w-full">
       <FormProvider {...form}>
-        <form className="space-y-8">
+        <form
+          onSubmit={form.handleSubmit(onValidSubmit, onError)}
+          className="space-y-8"
+        >
           <div className="space-y-6 border-t pt-6 mt-8">
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
               Información del Beneficiario
@@ -125,39 +140,56 @@ export default function EvaluationBeneficiariesForm() {
             <PersonalInformation
               form={form}
               isExpanded={expandedSections.personal}
-              onToggle={() => toggleSection("personal")}
+              onToggle={() =>
+                setExpandedSections((prev) => ({
+                  ...prev,
+                  personal: !prev.personal,
+                }))
+              }
             />
 
             <CompanyInformation
               form={form}
               isExpanded={expandedSections.company}
-              onToggle={() => toggleSection("company")}
+              onToggle={() =>
+                setExpandedSections((prev) => ({
+                  ...prev,
+                  company: !prev.company,
+                }))
+              }
             />
 
             <CreditInformation
               form={form}
               isExpanded={expandedSections.credit}
-              onToggle={() => toggleSection("credit")}
+              onToggle={() =>
+                setExpandedSections((prev) => ({
+                  ...prev,
+                  credit: !prev.credit,
+                }))
+              }
             />
 
             <EvaluatorObservations
               form={form}
               isExpanded={expandedSections.evaluator}
-              onToggle={() => toggleSection("evaluator")}
+              onToggle={() =>
+                setExpandedSections((prev) => ({
+                  ...prev,
+                  evaluator: !prev.evaluator,
+                }))
+              }
             />
           </div>
 
           <div className="flex justify-end">
-            <Button
-              type="button"
-              onClick={submitBeneficiaries}
-              className="submit-button w-full sm:w-auto"
-            >
+            <Button type="submit" className="submit-button w-full sm:w-auto">
               Guardar Beneficiario
             </Button>
           </div>
         </form>
       </FormProvider>
+
       <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <AlertDialogContent>
           <AlertDialogTitle>Guardado exitoso</AlertDialogTitle>

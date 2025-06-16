@@ -23,7 +23,7 @@ export default function EvaluatorObservations({
         control={form.control}
         name="evaluatorObservations"
         render={({ field }) => (
-          <FormItem>
+          <FormItem id="evaluatorObservations-field">
             <RequiredLabel>Observaciones</RequiredLabel>
             <FormControl>
               <Textarea placeholder="Ingrese las observaciones" className="resize-none min-h-[150px]" {...field} />

@@ -43,7 +43,7 @@ export default function PersonalInformation({
           control={form.control}
           name="fullName"
           render={({ field }) => (
-            <FormItem>
+            <FormItem id="fullName-field">
               <RequiredLabel>Nombre completo</RequiredLabel>
               <FormControl>
                 <Input placeholder="Ingrese el nombre completo" {...field} />
@@ -57,7 +57,7 @@ export default function PersonalInformation({
           control={form.control}
           name="firstSurname"
           render={({ field }) => (
-            <FormItem>
+            <FormItem id="lastName-field">
               <RequiredLabel>Primer Apellido</RequiredLabel>
               <FormControl>
                 <Input placeholder="Ingrese el primer apellido" {...field} />
@@ -73,7 +73,7 @@ export default function PersonalInformation({
           control={form.control}
           name="secondSurname"
           render={({ field }) => (
-            <FormItem>
+            <FormItem id="secondSurname-field">
               <RequiredLabel required={false}>Segundo Apellido</RequiredLabel>
               <FormControl>
                 <Input placeholder="Ingrese el segundo apellido" {...field} />
@@ -87,7 +87,7 @@ export default function PersonalInformation({
           control={form.control}
           name="gender"
           render={({ field }) => (
-            <FormItem>
+            <FormItem id="gender-field">
               <RequiredLabel>Género</RequiredLabel>
               <Select onValueChange={field.onChange}>
                 <FormControl>
@@ -114,7 +114,7 @@ export default function PersonalInformation({
             control={form.control}
             name="dateOfBirth"
             render={({ field }) => (
-              <FormItem className="flex flex-col">
+              <FormItem className="flex flex-col" id="dateOfBirth-field">
                 <DatePicker
                   label="Fecha de Nacimiento"
                   value={field.value ?? null}
@@ -130,7 +130,7 @@ export default function PersonalInformation({
           control={form.control}
           name="educationalProfile"
           render={({ field }) => (
-            <FormItem>
+            <FormItem id="educationalProfile-field">
               <RequiredLabel>Nivel Educativo</RequiredLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
@@ -157,7 +157,7 @@ export default function PersonalInformation({
           control={form.control}
           name="ethnicity"
           render={({ field }) => (
-            <FormItem>
+            <FormItem id="ethnicity-field">
               <RequiredLabel>Étnia</RequiredLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
@@ -184,7 +184,7 @@ export default function PersonalInformation({
           control={form.control}
           name="nationalId"
           render={({ field }) => (
-            <FormItem>
+            <FormItem id="nationalId-field">
               <RequiredLabel>Cédula</RequiredLabel>
               <FormControl>
                 <Input
@@ -205,7 +205,7 @@ export default function PersonalInformation({
           control={form.control}
           name="phoneNumber"
           render={({ field }) => (
-            <FormItem>
+            <FormItem id="phoneNumber-field">
               <RequiredLabel>Teléfono / Celular</RequiredLabel>
               <FormControl>
                 <Input

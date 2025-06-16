@@ -46,7 +46,9 @@ export function useBeneficiaries() {
       let localData: Beneficiary[] = [];
 
       // try {
-      //   const resp = await axios.get<Beneficiary[]>("/api/beneficiaries");
+      //   const resp = await axios.get<Beneficiary[]>(
+      //     "http://fonder.reprocolombia.com:8009/users"
+      //   );
       //   if (Array.isArray(resp.data)) {
       //     apiData = resp.data.map((b) => ({ ...b, source: "api" }));
       //   }
@@ -94,7 +96,9 @@ export function useBeneficiary(id: string | undefined) {
       setLoading(true);
 
       // try {
-      //   const res = await axios.get<Beneficiary>(`/api/beneficiaries/${id}`);
+      //   const res = await axios.get<Beneficiary>(
+      //     `http://fonder.reprocolombia.com/beneficiarios/${id}`
+      //   );
       //   if (res.data) {
       //     setUserData({ ...res.data, source: "api" });
       //     setSource("api");

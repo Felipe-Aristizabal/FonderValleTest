@@ -46,7 +46,6 @@ export default function UserCreatePage() {
       const e = form.formState.errors;
       console.log("Errores de validación:", e);
 
-      // Si decides seccionar el formulario visualmente, puedes usar algo como:
       // setExpandedSections(prev => ({
       //   ...prev,
       //   personal: prev.personal || !!(e.fullName || e.firstSurname || e.nationalId),
@@ -58,7 +57,7 @@ export default function UserCreatePage() {
     const entry = {
       id: uuidv4(),
       ...form.getValues(),
-      appState: "Inactivo",
+      appState: "Activo",
     };
 
     const prev = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]");
