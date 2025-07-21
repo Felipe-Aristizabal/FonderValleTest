@@ -16,7 +16,7 @@ import {
 import { FormRow } from "@/components/ui/form-row";
 import { FormSection } from "@/components/ui/form-section";
 import { RequiredLabel } from "@/components/ui/required-label";
-import type { UserFormValues } from "@/lib/form-schema";
+import type { UserFormValues } from "@/lib/schemas/user-schema";
 
 interface UserCreationFormProps {
   form: UseFormReturn<UserFormValues>;
@@ -28,26 +28,53 @@ export default function UserCreationForm({ form }: UserCreationFormProps) {
       <FormRow>
         <FormField
           control={form.control}
-          name="fullName"
+          name="nombres"
           render={({ field }) => (
             <FormItem>
-              <RequiredLabel>Nombre completo</RequiredLabel>
+              <RequiredLabel>Nombres</RequiredLabel>
               <FormControl>
-                <Input placeholder="Ingrese el nombre completo" {...field} />
+                <Input placeholder="Ej: María Fernanda" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
-          name="firstSurname"
+          name="apellidos"
           render={({ field }) => (
             <FormItem>
-              <RequiredLabel>Primer apellido</RequiredLabel>
+              <RequiredLabel>Apellidos</RequiredLabel>
               <FormControl>
-                <Input placeholder="Ingrese el primer apellido" {...field} />
+                <Input placeholder="Ej: Rodríguez Gómez" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </FormRow>
+      <FormRow>
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <RequiredLabel>Nombre de usuario</RequiredLabel>
+              <FormControl>
+                <Input placeholder="ej: jpablo123" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <RequiredLabel>Contraseña</RequiredLabel>
+              <FormControl>
+                <Input type="password" placeholder="********" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -58,29 +85,28 @@ export default function UserCreationForm({ form }: UserCreationFormProps) {
       <FormRow>
         <FormField
           control={form.control}
-          name="secondSurname"
+          name="email"
           render={({ field }) => (
             <FormItem>
-              <RequiredLabel required={false}>Segundo apellido</RequiredLabel>
+              <RequiredLabel>Email</RequiredLabel>
               <FormControl>
-                <Input placeholder="Ingrese el segundo apellido" {...field} />
+                <Input placeholder="correo@ejemplo.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
-          name="nationalId"
+          name="documento"
           render={({ field }) => (
             <FormItem>
-              <RequiredLabel>Cédula</RequiredLabel>
+              <RequiredLabel>Documento</RequiredLabel>
               <FormControl>
                 <Input
-                  placeholder="Ingrese la cédula"
-                  type="number"
+                  placeholder="Número de documento"
                   {...field}
+                  type="number"
                 />
               </FormControl>
               <FormMessage />
@@ -92,16 +118,12 @@ export default function UserCreationForm({ form }: UserCreationFormProps) {
       <FormRow>
         <FormField
           control={form.control}
-          name="phoneNumber"
+          name="celular"
           render={({ field }) => (
             <FormItem>
-              <RequiredLabel>Teléfono</RequiredLabel>
+              <RequiredLabel>Celular</RequiredLabel>
               <FormControl>
-                <Input
-                  placeholder="Ingrese el número"
-                  type="number"
-                  {...field}
-                />
+                <Input placeholder="Ej: 3001234567" {...field} type="tel" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -110,7 +132,7 @@ export default function UserCreationForm({ form }: UserCreationFormProps) {
 
         <FormField
           control={form.control}
-          name="role"
+          name="rol"
           render={({ field }) => (
             <FormItem>
               <RequiredLabel>Rol</RequiredLabel>
@@ -123,6 +145,7 @@ export default function UserCreationForm({ form }: UserCreationFormProps) {
                 <SelectContent>
                   <SelectItem value="Administrador">Administrador</SelectItem>
                   <SelectItem value="Asesor">Asesor</SelectItem>
+                  <SelectItem value="Beneficiario">Beneficiario</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />

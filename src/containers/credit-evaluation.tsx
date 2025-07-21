@@ -13,7 +13,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { ControllerRenderProps } from "react-hook-form";
-import type { VisitValues } from "@/lib/form-schema";
+import type { VisitValues } from "@/lib/schemas/visit-schema";
 import { Upload } from "lucide-react";
 
 interface CreditEvaluationProps {
@@ -45,7 +45,7 @@ export default function CreditEvaluation({
         }: {
           field: ControllerRenderProps<VisitValues, "creditUsedAsApproved">;
         }) => (
-          <FormItem>
+          <FormItem id="creditUsedAsApproved-field">
             <RequiredLabel>
               ¿El crédito fue utilizado conforme el destino aprobado?
             </RequiredLabel>
@@ -55,7 +55,11 @@ export default function CreditEvaluation({
                 defaultValue={field.value}
               >
                 {["Sí", "No", "Parcialmente"].map((v) => (
-                  <FormItem key={v} className="flex items-center gap-2">
+                  <FormItem
+                    key={v}
+                    className="flex items-center gap-2"
+                    id="creditUsedAsApproved-field-item"
+                  >
                     <FormControl>
                       <RadioGroupItem value={v} />
                     </FormControl>
@@ -77,7 +81,7 @@ export default function CreditEvaluation({
         }: {
           field: ControllerRenderProps<VisitValues, "creditUsageDescription">;
         }) => (
-          <FormItem>
+          <FormItem id="creditUsageDescription-field">
             <RequiredLabel>
               Describa en qué fue utilizado el crédito
             </RequiredLabel>
@@ -101,7 +105,7 @@ export default function CreditEvaluation({
         }: {
           field: ControllerRenderProps<VisitValues, "improvements">;
         }) => (
-          <FormItem>
+          <FormItem id="improvements-field">
             <RequiredLabel>
               ¿Qué mejoras se lograron con el crédito?
             </RequiredLabel>
@@ -146,7 +150,7 @@ export default function CreditEvaluation({
           }: {
             field: ControllerRenderProps<VisitValues, "otherImprovement">;
           }) => (
-            <FormItem>
+            <FormItem id="otherImprovement-field">
               <RequiredLabel required={false}>Otra mejora</RequiredLabel>
               <FormControl>
                 <Input placeholder="Describe otra mejora" {...field} />
@@ -165,7 +169,7 @@ export default function CreditEvaluation({
         }: {
           field: ControllerRenderProps<VisitValues, "timeToResults">;
         }) => (
-          <FormItem>
+          <FormItem id="timeToResults-field">
             <RequiredLabel>
               ¿Cuánto tiempo después del desembolso se evidenciaron resultados?
             </RequiredLabel>
@@ -202,7 +206,7 @@ export default function CreditEvaluation({
         }: {
           field: ControllerRenderProps<VisitValues, "resultsAsExpected">;
         }) => (
-          <FormItem>
+          <FormItem id="resultsAsExpected-field">
             <RequiredLabel>
               ¿Los resultados alcanzados fueron los esperados?
             </RequiredLabel>
@@ -239,7 +243,7 @@ export default function CreditEvaluation({
           }: {
             field: ControllerRenderProps<VisitValues, "resultsExplanation">;
           }) => (
-            <FormItem>
+            <FormItem id="resultsExplanation-field">
               <RequiredLabel required={false}>
                 Explicación de resultados
               </RequiredLabel>
@@ -260,7 +264,7 @@ export default function CreditEvaluation({
         }: {
           field: ControllerRenderProps<VisitValues, "financialRecords">;
         }) => (
-          <FormItem>
+          <FormItem id="financialRecords-field">
             <RequiredLabel>
               ¿Lleva registros contables o de uso del dinero?
             </RequiredLabel>
@@ -269,13 +273,19 @@ export default function CreditEvaluation({
                 onValueChange={field.onChange}
                 defaultValue={field.value}
               >
-                <FormItem className="flex items-center gap-2">
+                <FormItem
+                  className="flex items-center gap-2"
+                  id="financialRecords-item-yes"
+                >
                   <FormControl>
                     <RadioGroupItem value="Sí" />
                   </FormControl>
                   <FormLabel>Sí</FormLabel>
                 </FormItem>
-                <FormItem className="flex items-center gap-2">
+                <FormItem
+                  className="flex items-center gap-2"
+                  id="financialRecords-item-no"
+                >
                   <FormControl>
                     <RadioGroupItem value="No" />
                   </FormControl>
@@ -288,15 +298,15 @@ export default function CreditEvaluation({
         )}
       />
       {financialRecords === "Sí" && (
-        <FormField<VisitValues, "creditEvidenceFiles">
+        <FormField<VisitValues, "evidenceFile">
           control={control}
-          name="creditEvidenceFiles"
+          name="evidenceFile"
           render={({
             field,
           }: {
-            field: ControllerRenderProps<VisitValues, "creditEvidenceFiles">;
+            field: ControllerRenderProps<VisitValues, "evidenceFile">;
           }) => (
-            <FormItem>
+            <FormItem id="creditEvidenceFiles-field">
               <RequiredLabel required={false}>
                 Suba los archivos de evidencia
               </RequiredLabel>
@@ -356,7 +366,7 @@ export default function CreditEvaluation({
         }: {
           field: ControllerRenderProps<VisitValues, "resourceManager">;
         }) => (
-          <FormItem>
+          <FormItem id="resourceManager-field">
             <RequiredLabel>
               ¿Quién administra los recursos del crédito?
             </RequiredLabel>
@@ -392,7 +402,7 @@ export default function CreditEvaluation({
           }: {
             field: ControllerRenderProps<VisitValues, "otherResourceManager">;
           }) => (
-            <FormItem>
+            <FormItem id="otherResourceManager-field">
               <RequiredLabel required={false}>Especifique</RequiredLabel>
               <FormControl>
                 <Input
@@ -414,7 +424,7 @@ export default function CreditEvaluation({
         }: {
           field: ControllerRenderProps<VisitValues, "paymentsOnSchedule">;
         }) => (
-          <FormItem>
+          <FormItem id="paymentsOnSchedule-field">
             <RequiredLabel>
               ¿Se han cumplido los pagos según lo establecido en el cronograma?
             </RequiredLabel>
@@ -447,7 +457,7 @@ export default function CreditEvaluation({
           }: {
             field: ControllerRenderProps<VisitValues, "paymentExplanation">;
           }) => (
-            <FormItem>
+            <FormItem id="paymentExplanation-field">
               <RequiredLabel required={false}>Explicación</RequiredLabel>
               <FormControl>
                 <Textarea
@@ -469,7 +479,7 @@ export default function CreditEvaluation({
         }: {
           field: ControllerRenderProps<VisitValues, "satisfaction">;
         }) => (
-          <FormItem>
+          <FormItem id="satisfaction-field">
             <RequiredLabel>
               ¿Está satisfecho con el crédito recibido?
             </RequiredLabel>
@@ -506,7 +516,7 @@ export default function CreditEvaluation({
         }: {
           field: ControllerRenderProps<VisitValues, "needAnotherCredit">;
         }) => (
-          <FormItem>
+          <FormItem id="needAnotherCredit-field">
             <RequiredLabel>
               ¿Necesita otro crédito para fortalecer su proyecto?
             </RequiredLabel>
@@ -516,7 +526,11 @@ export default function CreditEvaluation({
                 defaultValue={field.value}
               >
                 {["Sí", "No", "Tal vez"].map((v) => (
-                  <FormItem key={v} className="flex items-center gap-2">
+                  <FormItem
+                    key={v}
+                    className="flex items-center gap-2"
+                    id="needAnotherCredit-item"
+                  >
                     <FormControl>
                       <RadioGroupItem value={v} />
                     </FormControl>
@@ -530,15 +544,15 @@ export default function CreditEvaluation({
         )}
       />
       {watch("needAnotherCredit") === "Sí" && (
-        <FormField<VisitValues, "creditIntendedUse">
+        <FormField<VisitValues, "creditINTendedUse">
           control={control}
-          name="creditIntendedUse"
+          name="creditINTendedUse"
           render={({
             field,
           }: {
-            field: ControllerRenderProps<VisitValues, "creditIntendedUse">;
+            field: ControllerRenderProps<VisitValues, "creditINTendedUse">;
           }) => (
-            <FormItem>
+            <FormItem id="creditIntendedUse-field">
               <RequiredLabel required={false}>Uso previsto</RequiredLabel>
               <FormControl>
                 <Textarea

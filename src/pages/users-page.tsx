@@ -2,63 +2,60 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import ReactPaginate from "react-paginate";
-import { Button } from "@/components/ui/button";
-import { MoreVertical, Loader2 } from "lucide-react";
+// import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 import { useUsers } from "@/hooks/use-users";
 import { useFilteredPagination } from "@/hooks/use-filtered-pagination";
 import { SearchBar } from "@/components/search-bar";
 import type { SearchFieldConfig } from "@/components/search-bar";
 import { TABLE_HEADERS_USERS } from "@/constants/tableHeaders";
+import type { User } from "@/models/user";
+import { UserDetailsDialog } from "@/components/user-details-dialog";
 
 interface UsersTableCriteria {
   fullName: string;
   cedula: string;
-  role: "Administrador" | "Beneficiario" | "Asesor" | "";
-  appState: "active" | "inactive" | "";
+  role: string;
+  estado: string;
 }
 
 export function UsersPage() {
   const navigate = useNavigate();
   const { all, loading } = useUsers();
   const [pageSize, setPageSize] = useState<number>(10);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
-  // Search criteria state for users
   const [criteria, setCriteria] = useState<UsersTableCriteria>({
     fullName: "",
     cedula: "",
     role: "",
-    appState: "",
+    estado: "",
   });
 
-  // Filter + paginate the users list
   const { current, pageCount, pageIndex, setPageIndex } = useFilteredPagination(
     all,
-    (user, crit: UsersTableCriteria) => {
+    (user: User, crit: UsersTableCriteria) => {
+      const fullName = `${user.nombres} ${user.apellidos}`.toLowerCase();
       const matchName = crit.fullName
-        ? user.fullName.toLowerCase().includes(crit.fullName.toLowerCase())
+        ? fullName.includes(crit.fullName.toLowerCase())
         : true;
-      const matchUsername = crit.cedula
-        ? user.nationalId.includes(crit.cedula)
+      const matchCedula = crit.cedula
+        ? user.documento.includes(crit.cedula)
         : true;
-      const matchRole = crit.role ? user.role === crit.role : true;
-      const matchState = crit.appState ? user.appState === crit.appState : true;
-      return matchName && matchUsername && matchRole && matchState;
+      const matchRole = crit.role ? user.rol === crit.role : true;
+      const matchEstado = crit.estado ? user.estado === crit.estado : true;
+
+      return matchName && matchCedula && matchRole && matchEstado;
     },
     criteria,
     pageSize
   );
 
-  /**
-   * Update one field in criteria
-   * @param field - "fullName" | "username" | "email"
-   * @param value - new search value
-   */
   const handleChange = (field: keyof UsersTableCriteria, value: string) => {
     setCriteria((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Configure which fields to render in SearchBar
   const fields: SearchFieldConfig<UsersTableCriteria>[] = [
     {
       name: "fullName",
@@ -67,7 +64,7 @@ export function UsersPage() {
     },
     { name: "cedula", label: "Cédula", placeholder: "Cédula" },
     { name: "role", label: "Rol", placeholder: "Rol" },
-    { name: "appState", label: "Estado", placeholder: "Estado" },
+    { name: "estado", label: "Estado", placeholder: "Estado" },
   ];
 
   if (loading) {
@@ -75,7 +72,7 @@ export function UsersPage() {
       <div className="w-full h-80 flex flex-col items-center justify-center">
         <Loader2 className="h-16 w-16 animate-spin text-blue-600" />
         <span className="mt-4 text-lg font-medium text-slate-700">
-          Loading users...
+          Cargando usuarios...
         </span>
       </div>
     );
@@ -105,15 +102,17 @@ export function UsersPage() {
             <option value={100}>100</option>
           </select>
         </div>
+
         <SearchBar
           fields={fields}
           criteria={criteria}
           onChange={handleChange}
           onSearch={() => setPageIndex(0)}
         />
+
         <button
           onClick={() => navigate("/nuevo-usuario")}
-          className="h-10 bg-secondary text-secondary-foreground border-2 border-gray-800  rounded-md px-5 text-sm font-semibold hover:bg-secondary/70 transition"
+          className="h-10 bg-secondary text-secondary-foreground border-2 border-gray-800 rounded-md px-5 text-sm font-semibold hover:bg-secondary/70 transition"
         >
           Nuevo usuario
         </button>
@@ -143,26 +142,17 @@ export function UsersPage() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3, delay: idx * 0.04 }}
               className="odd:bg-white even:bg-slate-50 hover:bg-slate-100 cursor-pointer"
+              onClick={() => setSelectedUser(u)}
             >
-              <td className="px-4 py-2 whitespace-nowrap">
-                {pageIndex * 10 + idx + 1}
+              <td className="px-4 py-4 whitespace-nowrap">
+                {pageIndex * pageSize + idx + 1}
               </td>
-              <td className="px-4 py-2 whitespace-nowrap">{u.fullName}</td>
-              <td className="px-4 py-2 whitespace-nowrap">{u.nationalId}</td>
-              <td className="px-4 py-2 whitespace-nowrap">{u.role}</td>
-              <td className="px-4 py-2 whitespace-nowrap">{u.appState}</td>
-              <td className="px-4 py-2 whitespace-nowrap">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="border rounded-full hover:bg-muted/80"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  <MoreVertical className="h-4 w-4" />
-                </Button>
+              <td className="px-4 py-4 whitespace-nowrap">
+                {u.nombres} {u.apellidos}
               </td>
+              <td className="px-4 py-4 whitespace-nowrap">{u.documento}</td>
+              <td className="px-4 py-4 whitespace-nowrap">{u.rol}</td>
+              <td className="px-4 py-4 whitespace-nowrap">{u.estado}</td>
             </motion.tr>
           ))}
 
@@ -197,6 +187,15 @@ export function UsersPage() {
         breakLabel="…"
         activeClassName="font-bold"
       />
+
+      {/* ─── User Details Modal ─────────────────────────────────────────────────────── */}
+      {selectedUser && (
+        <UserDetailsDialog
+          user={selectedUser}
+          open={!!selectedUser}
+          onClose={() => setSelectedUser(null)}
+        />
+      )}
     </div>
   );
 }

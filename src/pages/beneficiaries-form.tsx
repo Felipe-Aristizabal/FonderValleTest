@@ -6,8 +6,8 @@ import { FormProvider, useForm } from "react-hook-form";
 import type { FieldErrors } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 
-import type { FormValues } from "@/lib/form-schema";
-import { formSchema } from "@/lib/form-schema";
+import type { FormValues } from "@/lib/schemas/form-schema";
+import { formSchema } from "@/lib/schemas/form-schema";
 
 import { Button } from "@/components/ui/button";
 import PersonalInformation from "@/containers/personal-information";
@@ -64,8 +64,6 @@ export default function EvaluationBeneficiariesForm() {
 
     // === Evaluator Observations ===
     evaluatorObservations: "",
-
-    visits: [],
   };
 
   const form = useForm<FormValues>({

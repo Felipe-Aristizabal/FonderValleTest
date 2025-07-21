@@ -11,39 +11,51 @@ import { SearchBar } from "@/components/search-bar";
 import type { SearchFieldConfig } from "@/components/search-bar";
 import { TABLE_HEADERS_BENEFICIARIES } from "@/constants/tableHeaders";
 import { useBeneficiary } from "@/contexts/BeneficiaryContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function BeneficiariesPage() {
   const navigate = useNavigate();
   const { setBeneficiaryId } = useBeneficiary();
+  const { isLoading: authLoading } = useAuth();
   const { all, loading } = useBeneficiaries();
   const [pageSize, setPageSize] = useState<number>(10);
 
   interface BeneficiaryCriteria {
-    fullName: string;
+    nombreCompleto: string;
     cedula: string;
     nit: string;
   }
 
   // Define search criteria type for beneficiaries
   const [criteria, setCriteria] = useState<BeneficiaryCriteria>({
-    fullName: "",
+    nombreCompleto: "",
     cedula: "",
     nit: "",
   });
+  if (authLoading) {
+    return (
+      <div className="w-full h-80 flex flex-col items-center justify-center">
+        <Loader2 className="h-16 w-16 animate-spin text-blue-600" />
+        <span className="mt-4 text-lg font-medium text-slate-700">
+          Verificando autenticación…
+        </span>
+      </div>
+    );
+  }
 
   // Hook for filter + pagination
   const { current, pageCount, pageIndex, setPageIndex } = useFilteredPagination(
     all,
     (item, crit) => {
-      const matchName = crit.fullName
-        ? item.fullName.toLowerCase().includes(crit.fullName.toLowerCase())
+      const fullName = `${item.primernombre} ${item.segundonombre}`;
+      const matchName = crit.nombreCompleto
+        ? fullName.toLowerCase().includes(crit.nombreCompleto.toLowerCase())
         : true;
       const matchCedula = crit.cedula
-        ? item.nationalId.includes(crit.cedula)
+        ? item.numerodedocumento.includes(crit.cedula)
         : true;
-      const matchNit = crit.nit
-        ? item.nit === "NIT" && item.nit.includes(crit.nit)
-        : true;
+      const matchNit = crit.nit ? item.nit.includes(crit.nit) : true;
+
       return matchName && matchCedula && matchNit;
     },
     criteria,
@@ -58,7 +70,7 @@ export function BeneficiariesPage() {
   // Field configurations for the generic SearchBar
   const fields: SearchFieldConfig<BeneficiaryCriteria>[] = [
     {
-      name: "fullName",
+      name: "nombreCompleto",
       label: "Nombre o Apellido",
       placeholder: "Nombre o Apellido",
     },
@@ -107,12 +119,12 @@ export function BeneficiariesPage() {
           onChange={handleChange}
           onSearch={() => setPageIndex(0)}
         />
-        <button
+        {/* <button
           onClick={() => navigate("/nuevo-beneficiario")}
           className="h-10 bg-secondary text-secondary-foreground border-2 border-gray-800  rounded-md px-5 text-sm font-semibold hover:bg-secondary/70 transition"
         >
           Nuevo beneficiario
-        </button>
+        </button> */}
       </div>
 
       {/* ─── Table of Beneficiaries ──────────────────────────────────────────────────── */}
@@ -133,38 +145,57 @@ export function BeneficiariesPage() {
         <tbody className="divide-y divide-slate-200">
           {current.map((b, idx) => (
             <motion.tr
-              key={b.id}
+              key={b.idsolicitud}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3, delay: idx * 0.04 }}
               className="odd:bg-white even:bg-slate-50 hover:bg-slate-300 cursor-pointer"
               onClick={() => {
-                setBeneficiaryId(b.id);
-                navigate(`/beneficiario-detalles/${b.id}`);
+                setBeneficiaryId(b.idsolicitud);
+                navigate(`/beneficiario-detalles/${b.idsolicitud}`);
               }}
             >
+              {/* Index */}
               <td className="px-4 py-2 whitespace-nowrap">
-                {pageIndex * 10 + idx + 1}
+                {pageIndex * pageSize + idx + 1}
               </td>
-              <td className="px-4 py-2 whitespace-nowrap">{b.fullName}</td>
-              <td className="px-4 py-2 whitespace-nowrap">{b.nationalId}</td>
+
+              {/* full name */}
+              <td className="px-4 py-2 whitespace-nowrap">
+                {`${b.primernombre} ${b.segundonombre}`}
+              </td>
+
+              {/* national id */}
+              <td className="px-4 py-2 whitespace-nowrap">
+                {b.numerodedocumento}
+              </td>
+
+              {/* NIT */}
               <td className="px-4 py-2 whitespace-nowrap">{b.nit}</td>
-              <td className="px-4 py-2 whitespace-nowrap">{b.address}</td>
-              <td className="px-4 py-2 whitespace-nowrap">{b.phoneNumber}</td>
-              <td className="px-4 py-2 whitespace-nowrap">{b.gender}</td>
-              <td className="px-4 py-2 whitespace-nowrap">
-                {b.educationalProfile}
-              </td>
-              <td className="px-4 py-2 whitespace-nowrap">{b.appState}</td>
+
+              {/* direction */}
+              <td className="px-4 py-2 whitespace-nowrap">{b.residencia}</td>
+
+              {/* phone nomber */}
+              <td className="px-4 py-2 whitespace-nowrap">{b.celular}</td>
+
+              {/* genre */}
+              <td className="px-4 py-2 whitespace-nowrap">{b.genero}</td>
+
+              {/* Business type */}
+              <td className="px-4 py-2 whitespace-nowrap">{b.tipoempresa}</td>
+
+              {/* state */}
+              <td className="px-4 py-2 whitespace-nowrap">{b.estado}</td>
+
+              {/* actions */}
               <td className="px-4 py-2 whitespace-nowrap">
                 <Button
                   variant="outline"
                   size="icon"
                   className="border rounded-full hover:bg-muted/80"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
+                  onClick={(e) => e.stopPropagation()}
                 >
                   <MoreVertical className="h-4 w-4" />
                 </Button>

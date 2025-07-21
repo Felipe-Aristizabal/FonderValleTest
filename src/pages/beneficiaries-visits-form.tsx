@@ -3,11 +3,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useBeneficiary } from "@/contexts/BeneficiaryContext";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
-import { v4 as uuidv4 } from "uuid";
+import { FormProvider, useForm, type FieldErrors } from "react-hook-form";
+import { useUserId } from "@/contexts/UserContext";
 
-import type { VisitValues } from "@/lib/form-schema";
-import { visitSchema } from "@/lib/form-schema";
+import type { VisitValues } from "@/lib/schemas/visit-schema";
+import { visitSchema } from "@/lib/schemas/visit-schema";
 
 import { Button } from "@/components/ui/button";
 import CreditEvaluation from "@/containers/credit-evaluation";
@@ -24,21 +24,13 @@ import {
   AlertDialogFooter,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
-
-const STORAGE_KEY_VISITS = import.meta.env.VITE_STORAGE_KEY_BENEFICIARIES;
+import { useVisits } from "@/hooks/use-visits";
 
 export default function BeneficiariesVisitsForm() {
   const navigate = useNavigate();
   const { id: urlId } = useParams();
   const { beneficiaryId } = useBeneficiary();
-
-  if (urlId !== beneficiaryId) {
-    return (
-      <p className="text-red-600">
-        No puedes registrar visitas para otro beneficiario desde esta vista.
-      </p>
-    );
-  }
+  const idasesor = useUserId();
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState({
@@ -47,9 +39,11 @@ export default function BeneficiariesVisitsForm() {
     commercial: false,
     evidenceVisit: false,
   });
+  const { createVisit } = useVisits(
+    beneficiaryId ? Number(beneficiaryId) : undefined
+  );
 
   const defaultVisit: VisitValues = {
-    // === Basic Fields ===
     date: new Date(),
     creditUsedAsApproved: "",
     creditUsageDescription: "",
@@ -59,16 +53,15 @@ export default function BeneficiariesVisitsForm() {
     resultsAsExpected: "",
     resultsExplanation: "",
     financialRecords: "",
-    creditEvidenceFiles: [],
+    evidenceFile: [],
     resourceManager: "",
     otherResourceManager: "",
     paymentsOnSchedule: "",
     paymentExplanation: "",
     satisfaction: "",
     needAnotherCredit: "",
-    creditIntendedUse: "",
+    creditINTendedUse: "",
 
-    // === Financial Diagnosis ===
     monthlyIncome: "",
     fixedCosts: "",
     variableCosts: "",
@@ -77,16 +70,18 @@ export default function BeneficiariesVisitsForm() {
     monthlyPayment: "",
     emergencyReserve: "",
 
-    // === Commercial Diagnosis ===
     monthlyClients: "",
     monthlySales: "",
     totalSalesValue: "",
     currentEmployees: "",
-    salesChannels: [],
+    saleschannels: [],
     otherSalesChannel: "",
 
-    // === Visit Evidence ===
     evidenceVisitFile: [],
+    observaciones: "",
+    estado: "Activo",
+    beneficiario: beneficiaryId ? Number(beneficiaryId) : 0,
+    idasesor: 0,
   };
 
   const visitForm = useForm<VisitValues>({
@@ -96,86 +91,164 @@ export default function BeneficiariesVisitsForm() {
     reValidateMode: "onChange",
   });
 
-  const toggleSection = (section: keyof typeof expandedSections) => {
+  function findFirstErrorField(
+    errors: FieldErrors<any>,
+    path: string[] = []
+  ): string | null {
+    for (const key in errors) {
+      const error = errors[key];
+      const currentPath = [...path, key];
+
+      if (error?.types || error?.message) {
+        return currentPath.join(".");
+      }
+
+      if (typeof error === "object") {
+        const deep = findFirstErrorField(
+          error as FieldErrors<any>,
+          currentPath
+        );
+        if (deep) return deep;
+      }
+    }
+    return null;
+  }
+
+  const onError = (errors: FieldErrors<VisitValues>) => {
+    const firstErrorKey = findFirstErrorField(errors);
+
+    if (firstErrorKey) {
+      const domId = `${firstErrorKey.replace(/\./g, "-")}-field`;
+      const errorElement = document.getElementById(domId);
+
+      if (errorElement) {
+        errorElement.scrollIntoView({ behavior: "smooth", block: "center" });
+        const input = errorElement.querySelector(
+          "input, select, textarea, button"
+        );
+        if (input) {
+          (input as HTMLElement).focus();
+        }
+      }
+    }
+    // Expandir sección correspondiente
     setExpandedSections((prev) => ({
       ...prev,
-      [section]: !prev[section],
+      creditEval:
+        prev.creditEval ||
+        !!(
+          errors.date ||
+          errors.creditUsedAsApproved ||
+          errors.creditUsageDescription ||
+          errors.improvements
+        ),
+      financial:
+        prev.financial ||
+        !!(
+          errors.monthlyIncome ||
+          errors.fixedCosts ||
+          errors.variableCosts ||
+          errors.debtLevel ||
+          errors.monthlyPayment ||
+          errors.emergencyReserve ||
+          errors.financialRecords
+        ),
+      commercial:
+        prev.commercial ||
+        !!(
+          errors.monthlyClients ||
+          errors.monthlySales ||
+          errors.totalSalesValue ||
+          errors.currentEmployees ||
+          errors.saleschannels
+        ),
+      evidenceVisit: prev.evidenceVisit || !!errors.evidenceVisitFile,
     }));
   };
 
-  async function submitVisit() {
-    const isValid = await visitForm.trigger();
-    if (!isValid) {
-      const e = visitForm.formState.errors;
-      setExpandedSections((prev) => ({
-        ...prev,
-        creditEval: !!(e.creditUsedAsApproved || e.creditUsageDescription),
-        financial: !!e.financialRecords,
-        commercial: !!e.monthlySales,
-        evidenceVisit: !!e.evidenceVisitFile,
-      }));
-      return;
+  const onValidSubmit = async () => {
+    try {
+      const values = visitForm.getValues();
+
+      const fixedValues = {
+        ...values,
+        idbeneficiario: Number(beneficiaryId),
+        idasesor: Number(idasesor),
+      };
+
+      await createVisit(fixedValues);
+      visitForm.reset();
+      setDialogOpen(true);
+    } catch (err) {
+      console.error("Error al guardar la visita", err);
+      alert("❌ Ocurrió un error al guardar la visita.");
     }
-
-    const visit = { id: uuidv4(), ...visitForm.getValues() };
-    const prev = JSON.parse(localStorage.getItem(STORAGE_KEY_VISITS) ?? "[]");
-    const updated = prev.map((b: any) => {
-      if (b.id === beneficiaryId) {
-        const visits = Array.isArray(b.visits) ? b.visits : [];
-        return { ...b, visits: [...visits, visit] };
-      }
-      return b;
-    });
-
-    localStorage.setItem(STORAGE_KEY_VISITS, JSON.stringify(updated));
-    visitForm.reset();
-    setDialogOpen(true);
-  }
+  };
 
   return (
     <div className="max-w-3xl mx-auto w-full">
       <FormProvider {...visitForm}>
-        <form className="space-y-8">
+        <form
+          onSubmit={visitForm.handleSubmit(onValidSubmit, onError)}
+          className="space-y-8"
+        >
           <div className="space-y-6 border-t pt-6 mt-8">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
               Información de la Asesoría
             </h2>
             <p className="text-gray-600 text-sm sm:text-base">
-              Complete los datos financieros y comerciales de la asesoria.
+              Complete los datos financieros y comerciales de la asesoría.
             </p>
 
             <CreditEvaluation
               isExpanded={expandedSections.creditEval}
-              onToggle={() => toggleSection("creditEval")}
+              onToggle={() =>
+                setExpandedSections((prev) => ({
+                  ...prev,
+                  creditEval: !prev.creditEval,
+                }))
+              }
             />
 
             <FinancialDiagnosis
               isExpanded={expandedSections.financial}
-              onToggle={() => toggleSection("financial")}
+              onToggle={() =>
+                setExpandedSections((prev) => ({
+                  ...prev,
+                  financial: !prev.financial,
+                }))
+              }
             />
 
             <CommercialDiagnosis
               isExpanded={expandedSections.commercial}
-              onToggle={() => toggleSection("commercial")}
+              onToggle={() =>
+                setExpandedSections((prev) => ({
+                  ...prev,
+                  commercial: !prev.commercial,
+                }))
+              }
             />
 
             <VisitEvidence
               isExpanded={expandedSections.evidenceVisit}
-              onToggle={() => toggleSection("evidenceVisit")}
+              onToggle={() =>
+                setExpandedSections((prev) => ({
+                  ...prev,
+                  evidenceVisit: !prev.evidenceVisit,
+                }))
+              }
             />
           </div>
 
           <div className="flex justify-end">
-            <Button
-              type="button"
-              onClick={submitVisit}
-              className="submit-button w-full sm:w-auto"
-            >
+            <Button type="submit" className="submit-button w-full sm:w-auto">
               Guardar Asesoría
             </Button>
           </div>
         </form>
       </FormProvider>
+
       <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>

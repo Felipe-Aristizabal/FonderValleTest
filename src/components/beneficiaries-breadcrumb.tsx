@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 
-interface Section {
+export interface Section {
   id: string;
   label: string;
 }

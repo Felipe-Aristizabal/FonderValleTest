@@ -1,69 +1,44 @@
-import { useEffect, useState } from "react"
-import { useNavigate, useLocation } from "react-router-dom"
-import LogoInfi from "../assets/Icons/LogoInfiValle.png"
-import LogoGobValle from "../assets/Icons/Gobernacion.png"
-import { UserDropdown } from "@/components/user-dropdown"
-import { LogoutDialog } from "@/components/logout-dialog"
-
-interface User {
-  name: string
-  email?: string
-  role?: string
-  avatar?: string
-}
+import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import LogoInfi from "../assets/Icons/LogoInfiValle.png";
+import LogoGobValle from "../assets/Icons/Gobernacion.png";
+import { UserDropdown } from "@/components/user-dropdown";
+import { LogoutDialog } from "@/components/logout-dialog";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function Header() {
-  const location = useLocation()
-  const navigate = useNavigate()
-  const [user, setUser] = useState<User | null>(null)
-  const [showLogoutDialog, setShowLogoutDialog] = useState(false)
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user")
-    if (storedUser) {
-      try {
-        const parsedUser = JSON.parse(storedUser)
-        setUser({
-          name: parsedUser.name || "Usuario",
-          email: parsedUser.email,
-          role: parsedUser.role || "Superuser",
-          avatar: parsedUser.avatar
-        })
-      } catch {
-        setUser(null)
-      }
-    }
-  }, [])
-
-  const handleLogout = () => {
-    setShowLogoutDialog(false)
-    localStorage.removeItem("user")
-    setTimeout(() => {
-      navigate("/ingreso")
-    }, 100)
-  }
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
   const handleLogoutRequest = () => {
-    setShowLogoutDialog(true)
-  }
+    setShowLogoutDialog(true);
+  };
+
+  const handleLogoutConfirm = () => {
+    setShowLogoutDialog(false);
+    logout();
+    navigate("/ingreso");
+  };
 
   const handleHelp = () => {
-    alert("Abriendo ayuda...")
-  }
+    alert("Abriendo ayuda...");
+  };
 
   const handleProfile = () => {
-    navigate("/perfil")
-  }
+    navigate("/perfil");
+  };
 
   const handleSettings = () => {
-    navigate("/configuracion")
-  }
+    navigate("/configuracion");
+  };
 
   const handleDialogClose = () => {
-    setShowLogoutDialog(false)
-  }
+    setShowLogoutDialog(false);
+  };
 
-  const isLoginPage = location.pathname === "/ingreso"
+  const isLoginPage = location.pathname === "/ingreso";
 
   return (
     <header className="h-full w-full flex items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -85,21 +60,22 @@ export function Header() {
 
       {!isLoginPage && user && (
         <UserDropdown
-          user={user}
-          onLogout={handleLogoutRequest}
           onHelp={handleHelp}
           onProfile={handleProfile}
           onSettings={handleSettings}
+          onLogout={handleLogoutRequest}
           showEmail={false}
           showRole={true}
+          className="ml-auto"
         />
       )}
+
       <LogoutDialog
         open={showLogoutDialog}
         onOpenChange={setShowLogoutDialog}
-        onConfirm={handleLogout}
         onCancel={handleDialogClose}
+        onConfirm={handleLogoutConfirm}
       />
     </header>
-  )
+  );
 }

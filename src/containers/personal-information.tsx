@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 
 import { DatePicker } from "@/components/ui/date-picker";
-import type { FormValues } from "@/lib/form-schema";
+import type { FormValues } from "@/lib/schemas/form-schema";
 
 interface PersonalInformationProps {
   form: UseFormReturn<FormValues>;

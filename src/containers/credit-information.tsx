@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 
 import { formatThousands } from "@/lib/utils";
-import type { FormValues } from "@/lib/form-schema";
+import type { FormValues } from "@/lib/schemas/form-schema";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Checkbox } from "@/components/ui/checkbox";
 

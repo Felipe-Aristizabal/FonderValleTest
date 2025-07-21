@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { RequiredLabel } from "@/components/ui/required-label";
-import type { VisitValues } from "@/lib/form-schema";
+import type { VisitValues } from "@/lib/schemas/visit-schema";
 
 interface VisitEvidenceProps {
   isExpanded: boolean;
@@ -39,7 +39,7 @@ export default function VisitEvidence({
         }: {
           field: ControllerRenderProps<VisitValues, "evidenceVisitFile">;
         }) => (
-          <FormItem>
+          <FormItem id="evidenceVisitFile-field">
             <RequiredLabel required={false}>
               Suba los archivos de evidencia
             </RequiredLabel>

@@ -7,38 +7,7 @@ import {
 } from "@/components/ui/accordion";
 import { useNavigate } from "react-router-dom";
 import { formatDate, formatMoney } from "@/lib/utils";
-
-interface Visit {
-  date: string;
-  creditUsedAsApproved?: string;
-  creditUsageDescription?: string;
-  improvements?: string[];
-  otherImprovement?: string;
-  timeToResults?: string;
-  resultsAsExpected?: string;
-  resultsExplanation?: string;
-  financialRecords?: string;
-  resourceManager?: string;
-  otherResourceManager?: string;
-  paymentsOnSchedule?: string;
-  paymentExplanation?: string;
-  satisfaction?: string;
-  needAnotherCredit?: string;
-  creditIntendedUse?: string;
-  monthlyIncome?: string;
-  fixedCosts?: string;
-  variableCosts?: string;
-  debtLevel?: string;
-  creditUsedPercentage?: string;
-  monthlyPayment?: string;
-  emergencyReserve?: string;
-  monthlyClients?: string;
-  monthlySales?: string;
-  totalSalesValue?: string;
-  currentEmployees?: string;
-  salesChannels?: string[];
-  otherSalesChannel?: string;
-}
+import type { VisitValues } from "@/lib/schemas/visit-schema";
 
 export interface ExportItem {
   userId: string;
@@ -48,7 +17,7 @@ export interface ExportItem {
 
 interface UserVisitsTableProps {
   userId: string;
-  visits: Visit[];
+  visits: VisitValues[];
 }
 
 export function BeneficiariesVisitsTable({
@@ -81,11 +50,10 @@ export function BeneficiariesVisitsTable({
           <AccordionItem key={idx} value={`visit-${idx}`}>
             <AccordionTrigger className="flex justify-between items-center px-4 py-3 bg-gray-100 rounded-t-md hover:bg-gray-200">
               <span>
-                Asesoría #{idx + 1} — {formatDate(visit.date)}
+                Asesoría #{idx + 1} — {formatDate(visit.createdAt ?? "")}
               </span>
             </AccordionTrigger>
             <AccordionContent className="px-4 py-4 border border-t-0 rounded-b-md bg-white space-y-6 text-sm text-gray-700">
-
               {/* Evaluación del Crédito */}
               <div className="rounded-md border border-gray-200 p-4 bg-gray-50">
                 <h4 className="font-semibold text-lg text-blue-900 mb-4">
@@ -93,10 +61,12 @@ export function BeneficiariesVisitsTable({
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3">
                   <div>
-                    <strong>Uso del crédito:</strong> {visit.creditUsedAsApproved ?? "—"}
+                    <strong>Uso del crédito:</strong>{" "}
+                    {visit.creditUsedAsApproved ?? "—"}
                   </div>
                   <div>
-                    <strong>Descripción del uso:</strong> {visit.creditUsageDescription ?? "—"}
+                    <strong>Descripción del uso:</strong>{" "}
+                    {visit.creditUsageDescription ?? "—"}
                   </div>
                   <div className="md:col-span-2 lg:col-span-3">
                     <strong>Mejoras:</strong>
@@ -116,10 +86,12 @@ export function BeneficiariesVisitsTable({
                     </div>
                   )}
                   <div>
-                    <strong>Tiempo para resultados:</strong> {visit.timeToResults ?? "—"}
+                    <strong>Tiempo para resultados:</strong>{" "}
+                    {visit.timeToResults ?? "—"}
                   </div>
                   <div>
-                    <strong>Resultados esperados:</strong> {visit.resultsAsExpected ?? "—"}
+                    <strong>Resultados esperados:</strong>{" "}
+                    {visit.resultsAsExpected ?? "—"}
                   </div>
                   {visit.resultsExplanation && (
                     <div className="md:col-span-2">
@@ -127,33 +99,39 @@ export function BeneficiariesVisitsTable({
                     </div>
                   )}
                   <div>
-                    <strong>Registros financieros:</strong> {visit.financialRecords ?? "—"}
+                    <strong>Registros financieros:</strong>{" "}
+                    {visit.financialRecords ?? "—"}
                   </div>
                   <div>
-                    <strong>Administrador del crédito:</strong> {visit.resourceManager ?? "—"}
+                    <strong>Administrador del crédito:</strong>{" "}
+                    {visit.resourceManager ?? "—"}
                   </div>
                   {visit.otherResourceManager && (
                     <div>
-                      <strong>Otro administrador:</strong> {visit.otherResourceManager}
+                      <strong>Otro administrador:</strong>{" "}
+                      {visit.otherResourceManager}
                     </div>
                   )}
                   <div>
-                    <strong>Pagos al día:</strong> {visit.paymentsOnSchedule ?? "—"}
+                    <strong>Pagos al día:</strong>{" "}
+                    {visit.paymentsOnSchedule ?? "—"}
                   </div>
                   {visit.paymentExplanation && (
                     <div>
-                      <strong>Explicación de pagos:</strong> {visit.paymentExplanation}
+                      <strong>Explicación de pagos:</strong>{" "}
+                      {visit.paymentExplanation}
                     </div>
                   )}
                   <div>
                     <strong>Satisfacción:</strong> {visit.satisfaction ?? "—"}
                   </div>
                   <div>
-                    <strong>¿Necesita otro crédito?:</strong> {visit.needAnotherCredit ?? "—"}
+                    <strong>¿Necesita otro crédito?:</strong>{" "}
+                    {visit.needAnotherCredit ?? "—"}
                   </div>
-                  {visit.creditIntendedUse && (
+                  {visit.creditINTendedUse && (
                     <div>
-                      <strong>Uso previsto:</strong> {visit.creditIntendedUse}
+                      <strong>Uso previsto:</strong> {visit.creditINTendedUse}
                     </div>
                   )}
                 </div>
@@ -167,7 +145,9 @@ export function BeneficiariesVisitsTable({
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3">
                   <div>
                     <strong>Ingresos mensuales:</strong>{" "}
-                    {visit.monthlyIncome ? formatMoney(visit.monthlyIncome) : "—"}
+                    {visit.monthlyIncome
+                      ? formatMoney(visit.monthlyIncome)
+                      : "—"}
                   </div>
                   <div>
                     <strong>Costos fijos:</strong>{" "}
@@ -175,7 +155,9 @@ export function BeneficiariesVisitsTable({
                   </div>
                   <div>
                     <strong>Costos variables:</strong>{" "}
-                    {visit.variableCosts ? formatMoney(visit.variableCosts) : "—"}
+                    {visit.variableCosts
+                      ? formatMoney(visit.variableCosts)
+                      : "—"}
                   </div>
                   <div>
                     <strong>Nivel de endeudamiento:</strong>{" "}
@@ -187,11 +169,15 @@ export function BeneficiariesVisitsTable({
                   </div>
                   <div>
                     <strong>Pago mensual del crédito:</strong>{" "}
-                    {visit.monthlyPayment ? formatMoney(visit.monthlyPayment) : "—"}
+                    {visit.monthlyPayment
+                      ? formatMoney(visit.monthlyPayment)
+                      : "—"}
                   </div>
                   <div>
                     <strong>Reserva para imprevistos:</strong>{" "}
-                    {visit.emergencyReserve ? formatMoney(visit.emergencyReserve) : "—"}
+                    {visit.emergencyReserve
+                      ? formatMoney(visit.emergencyReserve)
+                      : "—"}
                   </div>
                 </div>
               </div>
@@ -212,7 +198,9 @@ export function BeneficiariesVisitsTable({
                   </div>
                   <div>
                     <strong>Valor total ventas:</strong>{" "}
-                    {visit.totalSalesValue ? formatMoney(visit.totalSalesValue) : "—"}
+                    {visit.totalSalesValue
+                      ? formatMoney(visit.totalSalesValue)
+                      : "—"}
                   </div>
                   <div>
                     <strong>Empleados actuales:</strong>{" "}
@@ -220,9 +208,9 @@ export function BeneficiariesVisitsTable({
                   </div>
                   <div className="md:col-span-2 lg:col-span-3">
                     <strong>Canales de venta:</strong>
-                    {visit.salesChannels?.length ? (
+                    {visit.saleschannels?.length ? (
                       <ul className="list-disc list-inside ml-4 mt-1">
-                        {visit.salesChannels.map((item, i) => (
+                        {visit.saleschannels.map((item, i) => (
                           <li key={i}>{item}</li>
                         ))}
                       </ul>

@@ -14,20 +14,16 @@ import EvaluationBeneficiariesForm from "./pages/beneficiaries-form";
 import BeneficiariesInformation from "@/pages/beneficiaries-information";
 import SettingsPage from "./pages/settings-page";
 import UserCreatePage from "./pages/user-create";
+import PrivateRoute from "@/routes/PrivateRoute";
+import UserEditPage from "./pages/user-edit";
 
 function App() {
   useEffect(() => {
     const STORAGE_KEY_BENEFICIARIES = import.meta.env
       .VITE_STORAGE_KEY_BENEFICIARIES;
 
-    const STORAGE_KEY_USERS = import.meta.env.VITE_STORAGE_KEY_USERS;
-
     const loadInitialData = async () => {
       try {
-        // localStorage.removeItem(STORAGE_KEY_BENEFICIARIES);
-        // localStorage.removeItem(STORAGE_KEY_USERS);
-        // console.log("Datos previos eliminados");
-
         const resBeneficiaries = await fetch(
           "/example_beneficiaries_data_negative.json"
         );
@@ -36,12 +32,9 @@ function App() {
           STORAGE_KEY_BENEFICIARIES,
           JSON.stringify(dataBeneficiaries)
         );
-        const resUsers = await fetch("/example_users_data_negative.json");
-        const dataUsers = await resUsers.json();
-        localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(dataUsers));
 
         console.log(
-          "Datos precargados en localStorage. Beneficiarios y Usuarios"
+          "Datos precargados en localStorage. Beneficiarios para gráficas"
         );
       } catch (error) {
         console.error("Error cargando los datos iniciales:", error);
@@ -55,25 +48,27 @@ function App() {
     <Routes>
       <Route path="/ingreso" element={<LoginPage />} />
       <Route index element={<Navigate to="/ingreso" replace />} />
+      <Route element={<PrivateRoute />}>
+        <Route path="/" element={<Layout />}>
+          <Route path="inicio" element={<HomePage />} />
+          <Route path="beneficiarios" element={<BeneficiariesPage />} />
+          <Route
+            path="nuevo-beneficiario"
+            element={<EvaluationBeneficiariesForm />}
+          />
+          <Route
+            path="beneficiario-detalles/:id"
+            element={<BeneficiariesInformation />}
+          />
+          <Route path="/nuevo-usuario" element={<UserCreatePage />} />
 
-      <Route path="/" element={<Layout />}>
-        <Route path="inicio" element={<HomePage />} />
-        <Route path="beneficiarios" element={<BeneficiariesPage />} />
-        <Route
-          path="nuevo-beneficiario"
-          element={<EvaluationBeneficiariesForm />}
-        />
-        <Route
-          path="beneficiario-detalles/:id"
-          element={<BeneficiariesInformation />}
-        />
-        <Route path="/nuevo-usuario" element={<UserCreatePage />} />
-
-        <Route path="usuarios" element={<UsersPage />} />
-        <Route path="formulario" element={<EvaluationForm />} />
-        <Route path="configuracion" element={<SettingsPage />} />
-        <Route path="reportes" element={<ReportsPage />} />
-        <Route path="asesorias/:id/:visitaNumero" element={<VisitForm />} />
+          <Route path="usuarios" element={<UsersPage />} />
+          <Route path="formulario" element={<EvaluationForm />} />
+          <Route path="configuracion" element={<SettingsPage />} />
+          <Route path="reportes" element={<ReportsPage />} />
+          <Route path="asesorias/:id/:visitaNumero" element={<VisitForm />} />
+          <Route path="usuario-editar/:id" element={<UserEditPage />} />
+        </Route>
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

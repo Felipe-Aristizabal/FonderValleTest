@@ -1,77 +1,96 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-
-export interface ApiUser {
-  id: string;
-  fullName: string;
-  nationalId: string;
-  role: string;
-  appState: string;
-}
-
-export interface User {
-  id: string;
-  fullName: string;
-  nationalId: string;
-  role: string;
-  appState: string;
-}
-
-const STORAGE_KEY = import.meta.env.VITE_STORAGE_KEY_USERS ?? "dataUsers";
+import { useEffect, useState } from "react";
+import axios from "@/lib/axios";
+import type { User } from "@/models/user";
 
 export function useUsers() {
   const [all, setAll] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const mapApiToUser = (u: ApiUser): User => ({
-    id: u.id,
-    fullName: u.fullName,
-    nationalId: u.nationalId,
-    role: u.role,
-    appState: u.appState,
-  });
-
   useEffect(() => {
-    async function fetchData() {
-      setLoading(true);
-
-      let apiUsers: User[] = [];
-      let localUsers: User[] = [];
-
+    const fetchUsers = async () => {
       try {
-        const res = await axios.get<ApiUser[]>("/api/users");
-        if (Array.isArray(res.data)) {
-          apiUsers = res.data.map(mapApiToUser);
-        }
-      } catch (error) {
-        console.error("Error fetching users:", error);
+        const res = await axios.get<User[]>("/users");
+        setAll(res.data);
+      } catch (err) {
+        console.error("Error fetching users:", err);
+      } finally {
+        setLoading(false);
       }
+    };
 
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY) ?? "[]";
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed)) {
-          localUsers = parsed;
-        }
-      } catch (e) {
-        console.error("Error parsing local users:", e);
-      }
-
-      // Eliminar duplicados por ID
-      const combined = [...apiUsers, ...localUsers].reduce<User[]>(
-        (acc, user) => {
-          if (!acc.some((u) => u.id === user.id)) acc.push(user);
-          return acc;
-        },
-        []
-      );
-
-      setAll(combined);
-      setLoading(false);
-    }
-
-    fetchData();
+    fetchUsers();
   }, []);
 
-  return { all, loading };
+  const createUser = async (data: Partial<User>) => {
+    console.log("Creating...");
+
+    const payload = {
+      ...data,
+      iddepartamento: null,
+      idciudad: null,
+      idprofesion: null,
+      tipodocumento: null,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    const res = await axios.post("/users", payload);
+    return res.data;
+  };
+
+  const updateUser = async (id: string | number, data: Partial<User>) => {
+
+    const mapRole = (role: string) => {
+      switch (role) {
+        case "Administrador":
+          return "ADMIN";
+        case "Asesor":
+          return "ASESOR";
+        case "Beneficiario":
+          return "BENEFICIARIO";
+        default:
+          return role; // En caso de algún valor inesperado
+      }
+    };
+    const mapEstado = (estado: string) => {
+  switch (estado?.toLowerCase()) {
+    case "activo":
+      return "ACTIVO";
+    case "inactivo":
+      return "INACTIVO";
+    default:
+      return estado; 
+  }
+};
+    const payload = {
+    id,  
+    ...data,
+    rol: mapRole(data.rol || ""),
+    estado: mapEstado(data.estado || ""),
+    updatedAt: new Date().toISOString(),
+  };
+
+  const res = await axios.put(`/users/${id}`, payload);
+
+  setAll((prev) =>
+    prev.map((user) =>
+      user.id === Number(id) ? { ...user, ...payload, id: Number(id) } : user
+    )
+  );
+
+  return res.data;
+};
+
+
+  return { all, loading, createUser, updateUser };
 }
+
+export async function getUserByEmail(email: string) {
+  try {
+    const res = await axios.get<User>(`/users/username/${email}`);
+    return res.data;
+  } catch (err) {
+    console.error(`No se pudo obtener el usuario con username ${email}:`, err);
+    return null;
+  }
+}
+

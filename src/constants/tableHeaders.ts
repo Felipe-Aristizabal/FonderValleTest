@@ -6,9 +6,8 @@ export const TABLE_HEADERS_BENEFICIARIES = [
   "Dirección",
   "Celular",
   "Género",
-  "Nivel Educativo",
+  "Tipo de empresa",
   "Estado",
-  "Acciones",
 ];
 
 export const TABLE_HEADERS_USERS = [
@@ -17,5 +16,4 @@ export const TABLE_HEADERS_USERS = [
   "Cédula",
   "Rol",
   "Estado",
-  "Acciones",
 ];

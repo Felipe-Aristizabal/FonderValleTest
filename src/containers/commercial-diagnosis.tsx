@@ -13,7 +13,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatThousands } from "@/lib/utils";
-import type { VisitValues } from "@/lib/form-schema";
+import type { VisitValues } from "@/lib/schemas/visit-schema";
 
 interface CommercialDiagnosisProps {
   isExpanded: boolean;
@@ -26,7 +26,7 @@ export default function CommercialDiagnosis({
 }: CommercialDiagnosisProps) {
   const { control, watch } = useFormContext<VisitValues>();
 
-  const salesChannels = watch("salesChannels") as string[];
+  const salesChannels = watch("saleschannels") as string[];
 
   return (
     <FormSection
@@ -39,7 +39,7 @@ export default function CommercialDiagnosis({
           control={control}
           name={`monthlyClients`}
           render={({ field }) => (
-            <FormItem>
+            <FormItem id="monthlyClients-field">
               <RequiredLabel>Número de clientes mensuales</RequiredLabel>
               <FormControl>
                 <Input type="number" placeholder="Ej. 20" {...field} />
@@ -53,7 +53,7 @@ export default function CommercialDiagnosis({
           control={control}
           name={`monthlySales`}
           render={({ field }) => (
-            <FormItem>
+            <FormItem id="monthlySales-field">
               <RequiredLabel>Número de ventas mensuales</RequiredLabel>
               <FormControl>
                 <Input type="number" placeholder="Ej. 45" {...field} />
@@ -69,7 +69,7 @@ export default function CommercialDiagnosis({
           control={control}
           name={`totalSalesValue`}
           render={({ field }) => (
-            <FormItem>
+            <FormItem id="totalSalesValue-field">
               <RequiredLabel>
                 Valor de las ventas actuales por mes
               </RequiredLabel>
@@ -94,7 +94,7 @@ export default function CommercialDiagnosis({
           control={control}
           name={`currentEmployees`}
           render={({ field }) => (
-            <FormItem>
+            <FormItem id="currentEmployees-field">
               <RequiredLabel>Número de empleados actuales</RequiredLabel>
               <FormControl>
                 <RadioGroup
@@ -103,7 +103,11 @@ export default function CommercialDiagnosis({
                   className="space-y-2"
                 >
                   {["De 1 a 5", "De 5 a 10", "De 10 a 15"].map((v) => (
-                    <FormItem key={v} className="flex items-center space-x-2">
+                    <FormItem
+                      key={v}
+                      className="flex items-center space-x-2"
+                      id="currentEmployees-field"
+                    >
                       <FormControl>
                         <RadioGroupItem value={v} />
                       </FormControl>
@@ -118,11 +122,11 @@ export default function CommercialDiagnosis({
         />
       </FormRow>
       <FormRow>
-        <FormField<VisitValues, "salesChannels">
+        <FormField<VisitValues, "saleschannels">
           control={control}
-          name="salesChannels"
+          name="saleschannels"
           render={({ field }) => (
-            <FormItem>
+            <FormItem id="salesChannels-field">
               <RequiredLabel>Canales de venta</RequiredLabel>
               <div className="space-y-2">
                 {[
@@ -135,7 +139,11 @@ export default function CommercialDiagnosis({
                 ].map((opt) => {
                   const checked = field.value.includes(opt);
                   return (
-                    <FormItem key={opt} className="flex items-center gap-2">
+                    <FormItem
+                      key={opt}
+                      className="flex items-center gap-2"
+                      id="salesChannels-field"
+                    >
                       <FormControl>
                         <Checkbox
                           checked={checked}
@@ -161,7 +169,7 @@ export default function CommercialDiagnosis({
             control={control}
             name="otherSalesChannel"
             render={({ field }) => (
-              <FormItem>
+              <FormItem id="otherSalesChannel-field">
                 <RequiredLabel required={false}>Otro canal</RequiredLabel>
                 <FormControl>
                   <Input placeholder="Describe otro canal" {...field} />

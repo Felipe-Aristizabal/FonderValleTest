@@ -11,7 +11,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import type { VisitValues } from "@/lib/form-schema";
+import type { VisitValues } from "@/lib/schemas/visit-schema";
 import { formatThousands } from "@/lib/utils";
 
 interface FinancialDiagnosisProps {
@@ -40,7 +40,7 @@ export default function FinancialDiagnosis({
           }: {
             field: ControllerRenderProps<VisitValues, "monthlyIncome">;
           }) => (
-            <FormItem>
+            <FormItem id="monthlyIncome-field">
               <RequiredLabel>Ingresos mensuales</RequiredLabel>
               <FormControl>
                 <Input
@@ -66,7 +66,7 @@ export default function FinancialDiagnosis({
           }: {
             field: ControllerRenderProps<VisitValues, "fixedCosts">;
           }) => (
-            <FormItem>
+            <FormItem id="fixedCosts-field">
               <RequiredLabel>Costos fijos mensuales</RequiredLabel>
               <FormControl>
                 <Input
@@ -94,7 +94,7 @@ export default function FinancialDiagnosis({
           }: {
             field: ControllerRenderProps<VisitValues, "variableCosts">;
           }) => (
-            <FormItem>
+            <FormItem id="variableCosts-field">
               <RequiredLabel>Costos variables mensuales</RequiredLabel>
               <FormControl>
                 <Input
@@ -120,7 +120,7 @@ export default function FinancialDiagnosis({
           }: {
             field: ControllerRenderProps<VisitValues, "debtLevel">;
           }) => (
-            <FormItem>
+            <FormItem id="debtLevel-field">
               <RequiredLabel>Nivel de endeudamiento (%)</RequiredLabel>
               <FormControl>
                 <Input
@@ -147,7 +147,7 @@ export default function FinancialDiagnosis({
           }: {
             field: ControllerRenderProps<VisitValues, "creditUsedPercentage">;
           }) => (
-            <FormItem>
+            <FormItem id="creditUsedPercentage-field">
               <RequiredLabel>Monto del crédito utilizado (%)</RequiredLabel>
               <FormControl>
                 <Input
@@ -172,7 +172,7 @@ export default function FinancialDiagnosis({
           }: {
             field: ControllerRenderProps<VisitValues, "monthlyPayment">;
           }) => (
-            <FormItem>
+            <FormItem id="monthlyPayment-field">
               <RequiredLabel>Pago mensual del crédito</RequiredLabel>
               <FormControl>
                 <Input
@@ -200,7 +200,7 @@ export default function FinancialDiagnosis({
           }: {
             field: ControllerRenderProps<VisitValues, "emergencyReserve">;
           }) => (
-            <FormItem>
+            <FormItem id="emergencyReserve-field">
               <RequiredLabel>Cantidad reservada para imprevistos</RequiredLabel>
               <FormControl>
                 <Input

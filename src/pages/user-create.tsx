@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
+import { useUsers } from "@/hooks/use-users";
 
 import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
+  AlertDialogTrigger,
   AlertDialogContent,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -16,62 +16,90 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 
-import UserCreationForm from "@/containers/user-creation-form"; // Asegúrate de crear este archivo
-import { userSchema, type UserFormValues } from "@/lib/form-schema";
-
-const STORAGE_KEY = import.meta.env.VITE_STORAGE_KEY_USERS ?? "usersData";
+import UserCreationForm from "@/containers/user-creation-form";
+import { userSchema, type UserFormValues } from "@/lib/schemas/user-schema";
 
 export default function UserCreatePage() {
   const navigate = useNavigate();
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   const form = useForm<UserFormValues>({
     resolver: zodResolver(userSchema),
     defaultValues: {
-      fullName: "",
-      firstSurname: "",
-      secondSurname: "",
-      nationalId: "",
-      phoneNumber: "",
-      role: "",
+      nombres: "",
+      apellidos: "",
+      username: "",
+      documento: "",
+      email: "",
+      direccion: "",
+      celular: "",
+      departamento: "",
+      ciudad: "",
+      rol: "",
+      estado: "Activo",
+      profesion: "",
+      niveleducativo: "",
+      fechanacimiento: "",
+      password: "",
     },
   });
 
+  const { createUser } = useUsers();
+
   const submitUser = async () => {
-    console.log("Valores del formulario:", form.getValues());
     const isValid = await form.trigger();
-    console.log("¿Formulario válido?:", isValid);
-
     if (!isValid) {
-      const e = form.formState.errors;
-      console.log("Errores de validación:", e);
-
-      // setExpandedSections(prev => ({
-      //   ...prev,
-      //   personal: prev.personal || !!(e.fullName || e.firstSurname || e.nationalId),
-      // }));
-
+      console.warn("Formulario inválido:", form.formState.errors);
       return;
     }
 
-    const entry = {
-      id: uuidv4(),
-      ...form.getValues(),
-      appState: "Activo",
+    const raw = form.getValues();
+
+    const userData = {
+      nombres: raw.nombres,
+      apellidos: raw.apellidos,
+      email: raw.email,
+      username: raw.username,
+      password: raw.password,
+      documento: raw.documento,
+      celular: raw.celular,
+      rol: raw.rol,
+      estado: "ACTIVO",
+
+      direccion: raw.direccion || "",
+      ciudad: raw.ciudad || "",
+      departamento: raw.departamento || "",
+      profesion: raw.profesion || "",
+      niveleducativo: raw.niveleducativo || "",
+      fechanacimiento: raw.fechanacimiento || "",
+
+      iddepartamento: null,
+      idciudad: null,
+      idprofesion: null,
+      tipodocumento: null,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
 
-    const prev = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]");
-    prev.push(entry);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(prev));
-
-    form.reset();
-    setDialogOpen(true);
+    try {
+      await createUser(userData);
+      form.reset();
+      triggerRef.current?.click();
+    } catch (error) {
+      console.error("Error al crear usuario:", error);
+    }
   };
 
   return (
     <div className="max-w-3xl mx-auto w-full">
       <FormProvider {...form}>
-        <form className="space-y-8">
+        <form
+          className="space-y-8"
+          onSubmit={(e) => {
+            e.preventDefault();
+            submitUser();
+          }}
+        >
           <div className="space-y-6 border-t pt-6 mt-8">
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
               Crear Usuario
@@ -84,18 +112,17 @@ export default function UserCreatePage() {
           </div>
 
           <div className="flex justify-end">
-            <Button
-              type="button"
-              onClick={submitUser}
-              className="w-full sm:w-auto"
-            >
+            <Button type="submit" className="w-full sm:w-auto">
               Crear Usuario
             </Button>
           </div>
         </form>
       </FormProvider>
 
-      <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <button ref={triggerRef} className="hidden" />
+        </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Usuario creado</AlertDialogTitle>

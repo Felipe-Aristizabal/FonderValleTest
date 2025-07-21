@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
-import type { FormValues } from "@/lib/form-schema";
-import { formSchema } from "@/lib/form-schema";
-import type { VisitValues } from "@/lib/form-schema";
-import { visitSchema } from "@/lib/form-schema";
-import { v4 as uuidv4 } from "uuid";
+import type { FormValues } from "@/lib/schemas/form-schema";
+import { formSchema } from "@/lib/schemas/form-schema";
+import type { VisitValues } from "@/lib/schemas/visit-schema";
+import { visitSchema } from "@/lib/schemas/visit-schema";
 
 import { Button } from "@/components/ui/button";
 import PersonalInformation from "@/containers/personal-information";
@@ -17,7 +16,9 @@ import FinancialDiagnosis from "@/containers/financial-diagnosis";
 import CommercialDiagnosis from "@/containers/commercial-diagnosis";
 import VisitEvidence from "@/containers/visit-evidence";
 
-const STORAGE_KEY = import.meta.env.VITE_STORAGE_KEY ?? "fallbackKey";
+import { useUserId } from "@/contexts/UserContext";
+import { useBeneficiary } from "@/contexts/BeneficiaryContext";
+import { useVisits } from "@/hooks/use-visits";
 
 export default function EvaluationForm() {
   const [expandedSections, setExpandedSections] = useState({
@@ -31,56 +32,84 @@ export default function EvaluationForm() {
     evidenceVisit: false,
   });
 
+  const idasesor = useUserId();
+  const { beneficiaryId } = useBeneficiary();
+  const { createVisit } = useVisits(
+    beneficiaryId ? Number(beneficiaryId) : undefined
+  );
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      fullName: "",
+      firstSurname: "",
+      secondSurname: "",
+      gender: "",
+      dateOfBirth: new Date(),
+      educationalProfile: "",
+      ethnicity: "",
+      nationalId: "",
+      phoneNumber: "",
+      companyName: "",
+      nit: "",
+      economicSector: "",
+      mainSector: "",
+      city: "",
+      address: "",
+      approvedCreditValue: "",
+      disbursementDate: new Date(),
       creditDestination: [],
       otherCreditDestination: "",
-      visits: [
-        {
-          date: new Date(),
-
-          creditUsedAsApproved: "",
-          creditUsageDescription: "",
-          improvements: [],
-          otherImprovement: "",
-          timeToResults: "",
-          resultsAsExpected: "",
-          resultsExplanation: "",
-          financialRecords: "",
-          resourceManager: "",
-          otherResourceManager: "",
-          paymentsOnSchedule: "",
-          paymentExplanation: "",
-          satisfaction: "",
-          needAnotherCredit: "",
-          creditIntendedUse: "",
-
-          monthlyIncome: "",
-          fixedCosts: "",
-          variableCosts: "",
-          debtLevel: "",
-          creditUsedPercentage: "",
-          monthlyPayment: "",
-          emergencyReserve: "",
-
-          monthlyClients: "",
-          monthlySales: "",
-          totalSalesValue: "",
-          currentEmployees: "",
-          salesChannels: [],
-          otherSalesChannel: "",
-          evidenceVisitFile: [],
-        },
-      ],
+      evaluatorObservations: "",
     },
+    mode: "onChange",
+    reValidateMode: "onChange",
   });
 
-  const visit0 = form.getValues("visits")[0];
+  const defaultVisit: VisitValues = {
+    date: new Date(),
+    creditUsedAsApproved: "",
+    creditUsageDescription: "",
+    improvements: [],
+    otherImprovement: "",
+    timeToResults: "",
+    resultsAsExpected: "",
+    resultsExplanation: "",
+    financialRecords: "",
+    evidenceFile: [],
+    resourceManager: "",
+    otherResourceManager: "",
+    paymentsOnSchedule: "",
+    paymentExplanation: "",
+    satisfaction: "",
+    needAnotherCredit: "",
+    creditINTendedUse: "",
+
+    monthlyIncome: "0",
+    fixedCosts: "0",
+    variableCosts: "0",
+    debtLevel: "0",
+    creditUsedPercentage: "0",
+    monthlyPayment: "0",
+    emergencyReserve: "0",
+
+    monthlyClients: "0",
+    monthlySales: "0",
+    totalSalesValue: "0",
+    currentEmployees: "0",
+    saleschannels: [],
+    otherSalesChannel: "",
+
+    evidenceVisitFile: [],
+    observaciones: "",
+    estado: "Activo",
+    beneficiario: 0,
+    idasesor: 0,
+  };
 
   const visitForm = useForm<VisitValues>({
     resolver: zodResolver(visitSchema),
-    defaultValues: visit0,
+    defaultValues: defaultVisit,
     mode: "onChange",
     reValidateMode: "onChange",
   });
@@ -97,8 +126,6 @@ export default function EvaluationForm() {
   }, [form]);
 
   async function submitBoth() {
-    // const visitOk = await visitForm.trigger();
-    form.setValue("visits.0", visitForm.getValues(), { shouldDirty: true });
     const mainOk = await form.trigger();
     if (!mainOk) {
       const e = form.formState.errors;
@@ -112,15 +139,28 @@ export default function EvaluationForm() {
       return;
     }
 
-    saveAll(form.getValues());
-  }
+    if (!idasesor || !beneficiaryId) {
+      alert(
+        "⏳ Espera a que se cargue la información del asesor o beneficiario."
+      );
+      return;
+    }
 
-  function saveAll(mainData: FormValues) {
-    const entry = { id: uuidv4(), ...mainData };
-    const prev = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]");
-    prev.push(entry);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(prev));
-    alert("✅ Evaluación guardada");
+    try {
+      const visitData = {
+        ...visitForm.getValues(),
+        beneficiario: Number(beneficiaryId),
+        idasesor: Number(idasesor),
+      };
+
+      await createVisit(visitData);
+      alert("✅ Evaluación guardada como visita");
+      visitForm.reset();
+      form.reset();
+    } catch (err) {
+      console.error(err);
+      alert("❌ Error al guardar la evaluación");
+    }
   }
 
   return (

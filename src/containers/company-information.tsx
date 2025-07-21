@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { FormValues } from "@/lib/form-schema";
+import type { FormValues } from "@/lib/schemas/form-schema";
 
 import municipiosValle from "@/data/municipios-valle.json";
 import economicSectorArea from "@/data/economic-sectors.json";
@@ -61,7 +61,7 @@ export default function CompanyInformation({
           control={form.control}
           name="nit"
           render={({ field }) => (
-            <FormItem  id="nit-field">
+            <FormItem id="nit-field">
               <RequiredLabel>RUT</RequiredLabel>
               <FormControl>
                 <Input
