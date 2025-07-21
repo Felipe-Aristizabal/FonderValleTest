@@ -79,10 +79,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [token]);
 
   const login = async (email: string, password: string) => {
-    const res = await axios.post("http://localhost:8001/auth/login", {
-      username: email,
-      password: password,
-    });
+    const res = await axios.post(
+      "https://ec2-3-22-100-200.us-east-2.compute.amazonaws.com:8009/auth/login",
+      {
+        username: email,
+        password: password,
+      }
+    );
 
     const { token } = res.data;
     setToken(token);
