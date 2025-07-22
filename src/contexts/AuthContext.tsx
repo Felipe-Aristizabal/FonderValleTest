@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import axios from "axios";
+import axios from "@/lib/axios"; // Usamos tu instancia configurada con baseURL
 
 interface AuthContextType {
   user: any | null;
@@ -55,7 +55,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [token]);
 
-  // Redirección automática si el token expira
   useEffect(() => {
     if (!token) return;
 
@@ -79,13 +78,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [token]);
 
   const login = async (email: string, password: string) => {
-    const res = await axios.post(
-      "https://ec2-3-22-100-200.us-east-2.compute.amazonaws.com:8009/auth/login",
-      {
-        username: email,
-        password: password,
-      }
-    );
+    const res = await axios.post("/auth/login", {
+      username: email,
+      password: password,
+    });
 
     const { token } = res.data;
     setToken(token);
@@ -102,7 +98,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(extractedUser);
     }
 
-    axios.defaults.headers.common["Authorization"] = `Bearer token`;
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   };
 
   const logout = () => {

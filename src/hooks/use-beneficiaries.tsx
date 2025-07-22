@@ -12,9 +12,7 @@ export function useBeneficiaries() {
     async function fetchData() {
       setLoading(true);
       try {
-        const resp = await axios.get<Beneficiary[]>(
-          "https://ec2-3-22-100-200.us-east-2.compute.amazonaws.com:8009/beneficiarios"
-        );
+        const resp = await axios.get<Beneficiary[]>("/beneficiarios");
         if (Array.isArray(resp.data)) {
           setAll(resp.data);
         } else {
@@ -45,9 +43,7 @@ export function useBeneficiary(id: string | undefined) {
     (async () => {
       setLoading(true);
       try {
-        const res = await axios.get<Beneficiary>(
-          `https://ec2-3-22-100-200.us-east-2.compute.amazonaws.com:8009/beneficiarios/${id}`
-        );
+        const res = await axios.get<Beneficiary>(`/beneficiarios/${id}`);
         setUserData(res.data);
       } catch (error) {
         console.error("Error fetching beneficiary:", error);
@@ -77,10 +73,9 @@ export function useBeneficiary(id: string | undefined) {
 
     // Opcional: enviar patch al servidor
     try {
-      await axios.patch(
-        `https://ec2-3-22-100-200.us-east-2.compute.amazonaws.com:8009/beneficiarios/${userData.idsolicitud}`,
-        { [field]: value }
-      );
+      await axios.patch(`/beneficiarios/${userData.idsolicitud}`, {
+        [field]: value,
+      });
     } catch (e) {
       console.error("Error updating beneficiary:", e);
     }
