@@ -77,7 +77,7 @@ export default function BeneficiariesVisitsForm() {
     saleschannels: [],
     otherSalesChannel: "",
 
-    evidenceVisitFile: [],
+    fileevidenceFile: [],
     observaciones: "",
     estado: "Activo",
     beneficiario: beneficiaryId ? Number(beneficiaryId) : 0,
@@ -162,7 +162,7 @@ export default function BeneficiariesVisitsForm() {
           errors.currentEmployees ||
           errors.saleschannels
         ),
-      evidenceVisit: prev.evidenceVisit || !!errors.evidenceVisitFile,
+      evidenceVisit: prev.evidenceVisit || !!errors.fileevidenceFile,
     }));
   };
 
@@ -175,7 +175,6 @@ export default function BeneficiariesVisitsForm() {
         idbeneficiario: Number(beneficiaryId),
         idasesor: Number(idasesor),
       };
-
       await createVisit(fixedValues);
       visitForm.reset();
       setDialogOpen(true);

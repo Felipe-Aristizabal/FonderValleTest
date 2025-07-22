@@ -33,11 +33,11 @@ export default function VisitEvidence({
     >
       <FormField
         control={control}
-        name="evidenceVisitFile"
+        name="fileevidenceFile"
         render={({
           field,
         }: {
-          field: ControllerRenderProps<VisitValues, "evidenceVisitFile">;
+          field: ControllerRenderProps<VisitValues, "fileevidenceFile">;
         }) => (
           <FormItem id="evidenceVisitFile-field">
             <RequiredLabel required={false}>

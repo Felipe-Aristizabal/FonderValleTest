@@ -40,7 +40,7 @@ export const visitSchema = z.object({
   otherSalesChannel: z.string().optional(),
 
   // Evidencia
-  evidenceVisitFile: evidenceFileField,
+  fileevidenceFile: evidenceFileField,
 
   // Extra
   observaciones: z.string().optional(),
