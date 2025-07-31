@@ -237,7 +237,9 @@ export default function BeneficiariesVisitsForm() {
             <Button
               type="button"
               variant="outline"
-              onClick={() => navigate(`/beneficiarios/${beneficiaryId}`)}
+              onClick={() =>
+                navigate(`/beneficiario-detalles/${beneficiaryId}`)
+              }
               className="w-full sm:w-auto"
             >
               Cancelar
