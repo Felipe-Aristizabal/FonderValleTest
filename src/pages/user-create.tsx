@@ -111,7 +111,16 @@ export default function UserCreatePage() {
             <UserCreationForm form={form} />
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => navigate("/usuarios")}
+              className="w-full sm:w-auto"
+            >
+              Cancelar
+            </Button>
+
             <Button type="submit" className="w-full sm:w-auto">
               Crear Usuario
             </Button>

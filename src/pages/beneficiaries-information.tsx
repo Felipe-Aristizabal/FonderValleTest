@@ -33,13 +33,8 @@ export default function BeneficiariesInformation() {
   const navigate = useNavigate();
   const detailRef = useRef<HTMLDivElement>(null);
 
-  const {
-    userData,
-    updateField,
-    loading,
-    validationError,
-    setValidationError,
-  } = useBeneficiary(id);
+  const { userData, loading, validationError, setValidationError } =
+    useBeneficiary(id);
 
   const beneficiaryId = useMemo(() => Number(id), [id]);
   const { all: visits, loading: loadingVisits } = useVisits(beneficiaryId);
@@ -48,7 +43,7 @@ export default function BeneficiariesInformation() {
     "personal" | "empresa" | "credito" | "visitas"
   >("personal");
 
-  // Memoizar labels de cada sección
+  // Memorizar labels de cada sección
   const sectionedFieldLabels = useMemo(
     () => ({
       "Información Personal": {
@@ -124,17 +119,6 @@ export default function BeneficiariesInformation() {
     );
   }, [exportData, id]);
 
-  // Handler memoizado para las acciones de edición
-  const handleActionClick = useCallback(
-    (field: string) => {
-      const nuevo = prompt("Nuevo valor");
-      if (nuevo != null) {
-        updateField(field, nuevo);
-      }
-    },
-    [updateField]
-  );
-
   if (loading || loadingVisits) {
     return (
       <div className="w-full h-80 flex flex-col items-center justify-center">
@@ -179,7 +163,15 @@ export default function BeneficiariesInformation() {
           📊 Descargar Excel
         </Button>
       </div>
-
+      <div className="mt-4">
+        <Button
+          variant="outline"
+          onClick={() => navigate("/beneficiarios")}
+          className="text-sm"
+        >
+          ← Volver a la lista de beneficiarios
+        </Button>
+      </div>
       <BeneficiariesBreadcrumb
         sections={STEPS}
         activeId={activeSection}
@@ -195,10 +187,6 @@ export default function BeneficiariesInformation() {
             sectionTitle="Información Personal"
             fields={sectionedFieldLabels["Información Personal"]}
             userData={userData}
-            showActions
-            onActionClick={handleActionClick}
-            editValue=""
-            setEditValue={() => {}}
           />
         )}
 
@@ -207,10 +195,6 @@ export default function BeneficiariesInformation() {
             sectionTitle="Información Empresarial"
             fields={sectionedFieldLabels["Información Empresarial"]}
             userData={userData}
-            showActions
-            onActionClick={handleActionClick}
-            editValue=""
-            setEditValue={() => {}}
           />
         )}
 
@@ -220,19 +204,11 @@ export default function BeneficiariesInformation() {
               sectionTitle="Historial Crediticio"
               fields={sectionedFieldLabels["Información del Crédito"]}
               userData={userData}
-              showActions
-              onActionClick={handleActionClick}
-              editValue=""
-              setEditValue={() => {}}
             />
             <BeneficiariesDataTable
               sectionTitle="Observaciones del Evaluador"
               fields={sectionedFieldLabels["Observaciones del Evaluador"]}
               userData={userData}
-              showActions
-              onActionClick={handleActionClick}
-              editValue=""
-              setEditValue={() => {}}
             />
           </>
         )}

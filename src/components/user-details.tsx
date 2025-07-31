@@ -116,8 +116,6 @@ export function UserDetails({
                 sectionTitle={sectionTitle}
                 fields={fieldsMap}
                 userData={userData}
-                editValue={""}
-                setEditValue={() => {}}
               />
             )
           )}

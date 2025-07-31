@@ -13,17 +13,23 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { login } = useAuth();
 
   const handleLogin = async () => {
+    setLoading(true);
+    setError("");
     try {
       await login(email, password);
       navigate("/inicio");
     } catch {
       setError("Correo o contraseña incorrectos");
+    } finally {
+      setLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -39,7 +45,13 @@ export default function LoginPage() {
           <p className="text-left text-gray-600">
             Inicia sesión en tu cuenta para continuar.
           </p>
-          <div className="space-y-4">
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              await handleLogin();
+            }}
+            className="space-y-4"
+          >
             <div className="space-y-2">
               <Label htmlFor="email">Correo</Label>
               <Input
@@ -63,10 +75,26 @@ export default function LoginPage() {
 
             {error && <p className="text-sm text-red-500">{error}</p>}
 
-            <Button onClick={handleLogin} className="w-full bg-gray-800">
-              <LogIn className="mr-2" /> Ingresar
+            <Button type="submit" className="w-full bg-gray-800" disabled={loading}>
+              {loading ? (
+                <span className="flex justify-center items-center">
+                  <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" >
+                    <circle
+                      className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path
+                      className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z"></path>
+                  </svg>
+                  Cargando...
+                </span>
+              ) : (
+                <>
+                  <LogIn className="mr-2" />
+                  Ingresar
+                </>
+              )}
             </Button>
-          </div>
+          </form>
+
         </div>
       </div>
 

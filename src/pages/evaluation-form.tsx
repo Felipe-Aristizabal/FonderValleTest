@@ -99,8 +99,6 @@ export default function EvaluationForm() {
     currentEmployees: "0",
     saleschannels: [],
     otherSalesChannel: "",
-
-    evidenceVisitFile: [],
     observaciones: "",
     estado: "Activo",
     beneficiario: 0,

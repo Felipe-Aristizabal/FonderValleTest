@@ -116,10 +116,6 @@ export function BeneficiariesDetails({
                 sectionTitle={sectionTitle}
                 fields={fieldsMap}
                 userData={userData}
-                editValue={""}
-                setEditValue={function (): void {
-                  throw new Error("Function not implemented.");
-                }}
               />
             )
           )}

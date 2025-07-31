@@ -2,8 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import ReactPaginate from "react-paginate";
-import { Button } from "@/components/ui/button";
-import { MoreVertical, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 import { useUsers } from "@/hooks/use-users";
 import { useFilteredPagination } from "@/hooks/use-filtered-pagination";

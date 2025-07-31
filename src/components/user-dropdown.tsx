@@ -55,13 +55,13 @@ export function UserDropdown({
     }
   };
 
-  const getInitials = (name: string) =>
-    name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase()
-      .slice(0, 2);
+  // const getInitials = (name: string) =>
+  //   name
+  //     .split(" ")
+  //     .map((n) => n[0])
+  //     .join("")
+  //     .toUpperCase()
+  //     .slice(0, 2);
 
   const firstName = user.name.split(" ")[0];
 

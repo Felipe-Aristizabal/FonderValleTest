@@ -42,7 +42,6 @@ export function BeneficiariesVisitsTable({
       </div>
     );
   }
-  console.log("VISIT FILE DATA:", visits.map(v => v.fileevidenceFile));
 
   return (
     <div className="space-y-4">
@@ -224,7 +223,6 @@ export function BeneficiariesVisitsTable({
                       <strong>Otro canal:</strong> {visit.otherSalesChannel}
                     </div>
                   )}
-                  
                 </div>
               </div>
             </AccordionContent>

@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import ReactPaginate from "react-paginate";
-import { Button } from "@/components/ui/button";
-import { MoreVertical, Loader2 } from "lucide-react";
+// import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 import { useBeneficiaries } from "@/hooks/use-beneficiaries";
 import { useFilteredPagination } from "@/hooks/use-filtered-pagination";
@@ -83,7 +83,7 @@ export function BeneficiariesPage() {
       <div className="w-full h-80 flex flex-col items-center justify-center">
         <Loader2 className="h-16 w-16 animate-spin text-blue-600" />
         <span className="mt-4 text-lg font-medium text-slate-700">
-          Loading beneficiaries...
+          Cargando beneficiarios...
         </span>
       </div>
     );
@@ -188,18 +188,6 @@ export function BeneficiariesPage() {
 
               {/* state */}
               <td className="px-4 py-2 whitespace-nowrap">{b.estado}</td>
-
-              {/* actions */}
-              <td className="px-4 py-2 whitespace-nowrap">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="border rounded-full hover:bg-muted/80"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <MoreVertical className="h-4 w-4" />
-                </Button>
-              </td>
             </motion.tr>
           ))}
 

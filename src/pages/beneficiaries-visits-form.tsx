@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useBeneficiary } from "@/contexts/BeneficiaryContext";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,24 +15,19 @@ import FinancialDiagnosis from "@/containers/financial-diagnosis";
 import CommercialDiagnosis from "@/containers/commercial-diagnosis";
 import VisitEvidence from "@/containers/visit-evidence";
 
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogAction,
-} from "@/components/ui/alert-dialog";
+import { SmsVerificationDialog } from "@/components/sms-verification-dialog";
+
 import { useVisits } from "@/hooks/use-visits";
+import axios from "@/lib/axios";
 
 export default function BeneficiariesVisitsForm() {
   const navigate = useNavigate();
-  const { id: urlId } = useParams();
+  // const { id: urlId } = useParams();
   const { beneficiaryId } = useBeneficiary();
   const idasesor = useUserId();
 
-  const [dialogOpen, setDialogOpen] = useState(false);
+  // const [setDialogOpen] = useState(false);
+  const [smsDialogOpen, setSmsDialogOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState({
     creditEval: true,
     financial: false,
@@ -168,19 +163,17 @@ export default function BeneficiariesVisitsForm() {
 
   const onValidSubmit = async () => {
     try {
-      const values = visitForm.getValues();
+      const id = Number(beneficiaryId);
+      console.log("Enviando SMS a beneficiario con ID:", id);
 
-      const fixedValues = {
-        ...values,
-        idbeneficiario: Number(beneficiaryId),
-        idasesor: Number(idasesor),
-      };
-      await createVisit(fixedValues);
-      visitForm.reset();
-      setDialogOpen(true);
+      await axios.post("/advices/send-sms-advice", {
+        idbeneficiario: id,
+      });
+
+      setSmsDialogOpen(true);
     } catch (err) {
-      console.error("Error al guardar la visita", err);
-      alert("❌ Ocurrió un error al guardar la visita.");
+      console.error("Error enviando SMS:", err);
+      alert("❌ No se pudo enviar el SMS.");
     }
   };
 
@@ -240,7 +233,15 @@ export default function BeneficiariesVisitsForm() {
             />
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => navigate(`/beneficiarios/${beneficiaryId}`)}
+              className="w-full sm:w-auto"
+            >
+              Cancelar
+            </Button>
             <Button type="submit" className="submit-button w-full sm:w-auto">
               Guardar Asesoría
             </Button>
@@ -248,23 +249,26 @@ export default function BeneficiariesVisitsForm() {
         </form>
       </FormProvider>
 
-      <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Visita guardada</AlertDialogTitle>
-            <AlertDialogDescription>
-              La asesoría se ha guardado correctamente.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogAction
-              onClick={() => navigate(`/beneficiario-detalles/${urlId}`)}
-            >
-              Ir al detalle del beneficiario
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <SmsVerificationDialog
+        open={smsDialogOpen}
+        onOpenChange={setSmsDialogOpen}
+        idbeneficiario={Number(beneficiaryId)}
+        onSuccess={async () => {
+          try {
+            const values = visitForm.getValues();
+            const fixedValues = {
+              ...values,
+              idbeneficiario: Number(beneficiaryId),
+              idasesor: Number(idasesor),
+            };
+            await createVisit(fixedValues);
+            visitForm.reset();
+          } catch (err) {
+            console.error("Error al guardar la visita", err);
+            alert("❌ Ocurrió un error al guardar la visita.");
+          }
+        }}
+      />
     </div>
   );
 }

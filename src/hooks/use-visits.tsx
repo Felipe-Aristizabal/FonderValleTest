@@ -44,9 +44,9 @@ export function useVisits(beneficiaryId?: number) {
       }
     });
 
-    for (const [key, val] of formData.entries()) {
-      console.log(`${key}:`, val);
-    }
+    // for (const [key, val] of formData.entries()) {
+    //   console.log(`${key}:`, val);
+    // }
 
     try {
       const res = await axios.post("/advices", formData, {
